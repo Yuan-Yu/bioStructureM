@@ -5,8 +5,8 @@ function [ca1]=superimpose(ca1,ca2)
 % superimpose ca1 to ca2 
 %return ca1 is be superimposed
 %%
-    COORD1=Coordfromca(ca1);
-    COORD2=Coordfromca(ca2);
+    COORD1=getCoordfromca(ca1);
+    COORD2=getCoordfromca(ca2);
     [R,T,eRMSD,oRMSD,newCOORD1]=rmsdfit(COORD2,COORD1);
     for i=1:length(ca1)
         ca1(i).coord(:)=newCOORD1(i,:);
