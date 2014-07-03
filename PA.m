@@ -1,4 +1,4 @@
-function [StrX, StrY, Index_Seq1_Seq2, Y_index TraceBack] = PA ( Seq_X, Seq_Y)
+function [StrX, StrY, Index_Seq1_Seq2, Y_index, TraceBack] = PA ( Seq_X, Seq_Y)
 %% Yang Lab| ARAVIND-100080710| Edited: 8th March, 2013.
 
 %%
@@ -6,9 +6,15 @@ function [StrX, StrY, Index_Seq1_Seq2, Y_index TraceBack] = PA ( Seq_X, Seq_Y)
 % Gap opening penalty =-10
 % Gap entension penalty =-1
 Y_index=0;
+%% Gap opening penalty = -10, gap extension penalty = -1.
+        gop=-10;
+        ge=-1;
+        %%
 %% Blosum62 data
-order='CSTPAGNDEQHRKMILVFYW';
-blosum=[9,-1,-1,-3,0,-3,-3,-3,-4,-3,-3,-3,-3,-1,-1,-1,-1,-2,-2,-2;-1,4,1,-1,1,0,1,0,0,0,-1,-1,0,-1,-2,-2,-2,-2,-2,-3;-1,1,4,1,-1,1,0,1,0,0,0,-1,0,-1,-2,-2,-2,-2,-2,-3;-3,-1,1,7,-1,-2,-1,-1,-1,-1,-2,-2,-1,-2,-3,-3,-2,-4,-3,-4;0,1,-1,-1,4,0,-1,-2,-1,-1,-2,-1,-1,-1,-1,-1,-2,-2,-2,-3;-3,0,1,-2,0,6,-2,-1,-2,-2,-2,-2,-2,-3,-4,-4,0,-3,-3,-2;-3,1,0,-2,-2,0,6,1,0,0,-1,0,0,-2,-3,-3,-3,-3,-2,-4;-3,0,1,-1,-2,-1,1,6,2,0,-1,-2,-1,-3,-3,-4,-3,-3,-3,-4;-4,0,0,-1,-1,-2,0,2,5,2,0,0,1,-2,-3,-3,-3,-3,-2,-3;-3,0,0,-1,-1,-2,0,0,2,5,0,1,1,0,-3,-2,-2,-3,-1,-2;-3,-1,0,-2,-2,-2,1,1,0,0,8,0,-1,-2,-3,-3,-2,-1,2,-2;-3,-1,-1,-2,-1,-2,0,-2,0,1,0,5,2,-1,-3,-2,-3,-3,-2,-3;-3,0,0,-1,-1,-2,0,-1,1,1,-1,2,5,-1,-3,-2,-3,-3,-2,-3;-1,-1,-1,-2,-1,-3,-2,-3,-2,0,-2,-1,-1,5,1,2,-2,0,-1,-1;-1,-2,-2,-3,-1,-4,-3,-3,-3,-3,-3,-3,-3,1,4,2,1,0,-1,-3;-1,-2,-2,-3,-1,-4,-3,-4,-3,-2,-3,-2,-2,2,2,4,3,0,-1,-2;-1,-2,-2,-2,0,-3,-3,-3,-2,-2,-3,-3,-2,1,3,1,4,-1,-1,-3;-2,-2,-2,-4,-2,-3,-3,-3,-3,-3,-1,-3,-3,0,0,0,-1,6,3,1;-2,-2,-2,-3,-2,-3,-2,-3,-2,-1,2,-2,-2,-1,-1,-1,-1,3,7,2;-2,-3,-3,-4,-3,-2,-4,-4,-3,-2,-2,-3,-3,-1,-3,-2,-3,1,2,11];
+% load aa2order and blosum62Matrix
+load('aa2order.mat');
+order_X=arrayfun(@(x) aa2order(x),Seq_X);
+order_Y=arrayfun(@(x) aa2order(x),Seq_Y);
 %%
 LenX=length(Seq_X);
 LenY=length(Seq_Y);
@@ -34,14 +40,8 @@ end
 
 for i=2:LenX+1
     for j=2:LenY+1
-        aa=find(ismember(order,Seq_X(i-1)));
-        bb=find(ismember(order,Seq_Y(j-1)));
-        s=blosum(find(ismember(order,Seq_X(i-1))),find(ismember(order,Seq_Y(j-1))));
+        s=blosum62Matrix(order_X(i-1),order_Y(j-1));
         V1=ScoreMatrix(i-1,j-1)+s;
-        %% Gap opening penalty = -10, gap extension penalty = -1.
-        gop=-10;
-        ge=-1;
-        %%
         v2=ScoreMatrix(i-1,j)+gop;%vertical
         vv=V(i-1,j)+ge;
         V(i,j)=max(vv,v2);   
@@ -56,8 +56,6 @@ for i=2:LenX+1
         end
         V3=H(i,j);
         
-        V11=[V1 V2 V3];
-        Vmax=max(V11);
         if(V1>V2 && V1>V3)
             dummy=1;
             ScoreMatrix(i,j)=V1;        
@@ -128,14 +126,12 @@ for k=1:length(StrY)
         Y_index=Y_index+1;
     end
 end
-Y_index;
 Seq2_index=0;
 for kk=1:length(Index_Seq1_Seq2)
     if Index_Seq1_Seq2(2,kk)~=0
         Seq2_index=Seq2_index+1;
     end
 end
-Seq2_index;
 Index_Seq1_Seq2(1,:)=sort(Index_Seq1_Seq2(1,:));
 Index_Seq1_Seq2(2,:)=sort(Index_Seq1_Seq2(2,:));
 %-------------------------------------------

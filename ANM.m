@@ -5,8 +5,8 @@ function [ ca,S ] = ANM( ca,mode )
 %return ca object that contain the ANM attribute
 %return S is the all eigvalue
 resnum=length(ca);
-[ss]=makeconANM(ca,resnum,'temp');
-[U,S]=readkdatModesANM(ss,resnum);
+[hes]=makeconANM(ca,resnum);
+[U,S]=modesANM(hes,resnum);
 %U(atomnum/3,mode)
 S=diag(S);
 %ca(index of atom).ANM matrix is like mode1_x   mode1_y     mode1_z

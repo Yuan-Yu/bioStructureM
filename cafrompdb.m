@@ -19,11 +19,11 @@ line = fgetl(fid);
 while ischar(line)
     if(length(line)>=66)
         if isequal(sscanf(line(1:6),'%c'),'ATOM  ') || isequal(sscanf(line(1:6),'%c'),'HETATM')
-            if  sscanf(line(23:26),'%i')==lastresno && double(sscanf(line(17:17),'%c'))==currentAltloc || sscanf(line(23:26),'%i')~=lastresno
+            if  (sscanf(line(23:26),'%i')==lastresno && double(sscanf(line(17:17),'%c'))==currentAltloc && sscanf(line(27:27),'%c')==currentAchar) || sscanf(line(23:26),'%i')~=lastresno
                 j=j+1;
                 ca(j).record  =  sscanf(line(1:6),'%c');
                 ca(j).atomno  =  sscanf(line(7:12),'%i');
-                ca(j).atmname =  sscanf(line(12:16),'%c');                
+                ca(j).atmname =  strtrim(line(12:16));                
                 ca(j).resname =  sscanf(line(18:20),'%c');
                 ca(j).resno =  sscanf(line(23:26),'%i');
                 ca(j).coord =  sscanf(line(31:54),'%f %f %f');
@@ -32,6 +32,7 @@ while ischar(line)
                 ca(j).occupancy=sscanf(line(55:60),'%f');
                 lastresno=sscanf(line(23:26),'%i');
                 currentAltloc=double(sscanf(line(17:17),'%c'));
+                currentAchar=sscanf(line(27:27),'%c');
             end
             
         %%%%%% Stop when 'END' is encountered and stop when the first model in NMR file was read%%%%%%%%%%%%
