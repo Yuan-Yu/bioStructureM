@@ -7,6 +7,10 @@ function [ ca,S ] = ANM( ca,mode )
 resnum=length(ca);
 [hes]=makeconANM(ca,resnum);
 [U,S]=modesANM(hes,resnum);
+% [ss]=makeconANM_old(ca,resnum,'temp');
+% [U,S]=readkdatModesANM(ss,resnum);
+
+
 %U(atomnum/3,mode)
 S=diag(S);
 %ca(index of atom).ANM matrix is like mode1_x   mode1_y     mode1_z
