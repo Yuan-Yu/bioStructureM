@@ -1,4 +1,5 @@
 function [ca] =cafrompdb(s,pdbType)
+%%% Bug: atomno should go from 7 to 11 and not 12.
 if ~exist('pdbType', 'var')
     pdbType='X-RAY';
 end
