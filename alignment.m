@@ -26,12 +26,8 @@ function [new  score s_table]=alignment(seq1,seq2)
             [ v index ]=scores(r,c,w,match_table,s_table);
             s_table(r+1,c+1)=v;
             t_table(r,c)=index;
-        end
-        
+        end      
     end
     score=s_table(end);
     %trackback
     new=track(seq1,seq2,t_table);
-    
-        
-        

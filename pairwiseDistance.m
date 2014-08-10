@@ -10,7 +10,7 @@ function [dmatrix]=pairwiseDistance(ca,numOfignore)
     else 
         numOfignore=numOfignore+1;
     end
-    crd=Coordfromca(ca);
+    crd=getCoordfromca(ca);
     numOfRes=length(ca);
     dmatrix=Inf(numOfRes);
     for i =1:numOfRes
