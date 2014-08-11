@@ -12,7 +12,7 @@ if ~exist('cutOff','var')
     cutOff=7.3;
 end
 numOfAtom=length(pdb);
-pairwiseDistance=getPairwiseDistance(pdb);
+pairwiseDistance=getPairwiseDistance(pdb,pdb);
 %the diag is 0.
 contactMatrix=eye(numOfAtom)-(pairwiseDistance<cutOff);
 contactNum=-sum(contactMatrix,2);
