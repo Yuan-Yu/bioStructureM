@@ -7,11 +7,5 @@ function [ca]=getChainFromCa(ca,chainID)
 %   chain3_atom1    chain3_atom2    chain3_atom3    chain3_atom4 -------
 %         |               |              |                 |   
 %         |               |              |                 |   
-resnum=length(ca);
-index=[1:resnum];
-chain=[ca.subunit];
-temp=(chain==chainID);
-temp=index.*temp;
-chain_index=reshape(temp,resnum,1)';
-chain_index(chain_index==0)=[];
-ca=ca(chain_index);
+atomChainList=[ca.subunit];
+ca=ca(atomChainList==chainID);

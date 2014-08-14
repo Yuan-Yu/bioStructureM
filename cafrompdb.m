@@ -14,6 +14,9 @@ ca(1).coord =[];
 ca(1).bval =[];
 ca(1).subunit =[];
 fid=fopen(s);
+if fid==-1
+    error([s ' file does not exist!!']);
+end
 line = fgetl(fid);
 % revised by Lee 062504 - original:      while isstr(line)  % isstr wont be supported in the later version
 % altloc double(sscanf(line(17:17),'%c'))

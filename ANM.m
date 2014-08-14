@@ -15,8 +15,6 @@ function [ ca,S ] = ANM( ca,mode )
 resnum=length(ca);
 [hes]=makeconANM(ca,resnum);
 [U,S]=modesANM(hes,resnum);
-% [ss]=makeconANM_old(ca,resnum,'temp');
-% [U,S]=readkdatModesANM(ss,resnum);
 
 %U(atomnum/3,mode)
 S=diag(S);
@@ -24,6 +22,8 @@ lastmode=6+mode;
     for i=1:resnum
         for j=7:lastmode
             ca(i).ANM(j-6,:)=reshape(U((i*3-2):i*3,j),1,3);
+            ca(i).ANMValue(j-6)=S(j);
+            
         end
     end
 end

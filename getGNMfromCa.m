@@ -14,5 +14,8 @@ function [gnmEigVector]=getGNMfromCa(pdb,fromModth,toModth)
 %       mode1_atom4     mode2_atom4     mode3_atom4 ------
 %           |               |               |
 %           |               |               |
-gnmEigVector=[pdb.GNM]';
+if ~exist('toModth','var')
+    toModth=fromModth;
+end
+gnmEigVector=reshape([pdb.GNM;],length([pdb(1).GNM]),length(pdb))';
 gnmEigVector=gnmEigVector(:,fromModth:toModth);

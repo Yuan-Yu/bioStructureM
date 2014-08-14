@@ -6,8 +6,8 @@ function newca=getAtomByResno(ca,resno,chainIDs)
 %	chainIDs is a array that contain the chainID.
 %	Ex.
 %		if ca is a two chain object,
-%		format of resno is 		[chain1_resno1 chain1_resno2 chain1_resno3 chain1_resno4]
-%								[chain2_resno1 chain2_resno2 chain2_resno3 chain2_resno4 chain2_resno5]
+%		format of resno is 		{[chain1_resno1 chain1_resno2 chain1_resno3 chain1_resno4]
+%								[chain2_resno1 chain2_resno2 chain2_resno3 chain2_resno4 chain2_resno5]}
 %		format of chainIDs  is [chain1_ID chain2_ID]
 %	note:
 %		if ca is a one chain object,
