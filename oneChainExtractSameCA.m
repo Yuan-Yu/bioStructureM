@@ -1,4 +1,4 @@
-function [newCA1,newCA2]=oneChainExtractSameCA(ca1,ca2)
+function [newCA1,newCA2,StrX,StrY]=oneChainExtractSameCA(ca1,ca2)
 %######## need dict.mat,PA.m,getAtomByAtomName#############
 %  Ca1,Ca2 is the object get from cafrompdb.m 
 %return newCA1 and newCA2 is the object get from cafrompdb. But only contain the same Ca atom.

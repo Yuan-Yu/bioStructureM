@@ -7,12 +7,5 @@ function [ca]=getAtomByAtomName(ca,atomName)
 %   ca  is same as input ca, but just contain target atoms
 %%
 atomName=regexp(atomName,'\s+','split');
-%atom=containers.Map(atomName, ones(1,length(atomName)));
-% temp=[];
-% for i=1:length(ca)
-%     if atom.isKey(strtrim(ca(i).atmname))
-%         temp=[temp,i];
-%     end
-% end
 temp=ismember({ca.atmname},atomName);
 ca=ca(temp);

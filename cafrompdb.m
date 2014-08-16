@@ -23,8 +23,9 @@ line = fgetl(fid);
 while ischar(line)
     if(length(line)>=66)
         if isequal(sscanf(line(1:6),'%c'),'ATOM  ') || isequal(sscanf(line(1:6),'%c'),'HETATM')
-            if  (sscanf(line(23:26),'%i')==lastresno && double(sscanf(line(17:17),'%c'))==currentAltloc && sscanf(line(27:27),'%c')==currentAchar) || sscanf(line(23:26),'%i')~=lastresno
-                j=j+1;
+            %if  (sscanf(line(23:26),'%i')==lastresno && double(sscanf(line(17:17),'%c'))==currentAltloc && sscanf(line(27:27),'%c')==currentAchar) || sscanf(line(23:26),'%i')~=lastresno %bug test 2014/8/16
+            if  (sscanf(line(23:26),'%i')==lastresno && double(sscanf(line(17:17),'%c'))==currentAltloc)  || sscanf(line(23:26),'%i')~=lastresno %bug test 2014/8/16
+				j=j+1;
                 ca(j).record  =  sscanf(line(1:6),'%c');
                 ca(j).atomno  =  sscanf(line(7:12),'%i');
                 ca(j).atmname =  strtrim(line(12:16));                
@@ -36,7 +37,8 @@ while ischar(line)
                 ca(j).occupancy=sscanf(line(55:60),'%f');
                 lastresno=sscanf(line(23:26),'%i');
                 currentAltloc=double(sscanf(line(17:17),'%c'));
-                currentAchar=sscanf(line(27:27),'%c');
+				ca(j).achar=sscanf(line(27:27),'%c');
+            %    currentAchar=sscanf(line(27:27),'%c'); %bug test 2014/8/16
             end
             
         %%%%%% Stop when 'END' is encountered and stop when the first model in NMR file was read%%%%%%%%%%%%
@@ -47,7 +49,7 @@ while ischar(line)
             j=0;
             lastresno=-1000;
             numOfMode=numOfMode+1;
-            mode{numOfMode}=ca;   
+            mode{numOfMode}=fixPdbBug__(ca);   
         end
     end
         line = fgetl(fid);
@@ -57,6 +59,8 @@ if isequal(pdbType,'NMR')&& ~isempty(mode)
     ca=mode;
 elseif isequal(pdbType,'NMR')
     display('It seems like this pdb is not NMR structure!')
+else
+	ca=fixPdbBug__(ca);
 end
 fclose(fid);
     
