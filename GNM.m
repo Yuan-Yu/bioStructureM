@@ -27,7 +27,7 @@ end
 lastMode=1+mode;
 for i=1:length(pdb)
     for j=2:lastMode
-        pdb(i).GNM(j-1)=U(i,j);
+        pdb(i).GNM(j-1,1)=U(i,j);
         pdb(i).GNMValue(j-1)=S(j);
     end
 end

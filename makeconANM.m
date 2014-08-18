@@ -1,5 +1,5 @@
 
-function [hes]=makeconANM(pdb,num)
+function [hes]=makeconANM(pdb,num,cutOff)
 
 j=0;
 k=0;
@@ -24,7 +24,7 @@ supe(3,2)=0.0  ;
         r=norm(pdb(j).coord-pdb(k).coord);
 % *************************** Change the CUTOFFs here ********************* 
         if(j==k) continue; end % Make the case only for i~=j
-        if(r<15)
+        if(r<cutOff)
 % *************************** Change the CUTOFFs here *********************                 
 %            cont(i,j) = -1;
 %            cont(j,i) = cont(i,j);

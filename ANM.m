@@ -1,4 +1,4 @@
-function [ ca,S ] = ANM( ca,mode )
+function [ ca,S ] = ANM( ca,mode,cutOff)
 %%%%%%% need maforceANM.m,readkdatModesANM.m %%%%%%%%%%%
 % input:	
 %	ca is the object gotten from cafrompdb
@@ -10,10 +10,13 @@ function [ ca,S ] = ANM( ca,mode )
 %                                     mode3_x   mode3_y     mode3_z
 %                                        |          |           |
 %                                   lastmode_x  lastmode_y   lastmode_z
-%	S is the all eigvalue
+%	ANMValue is the all eigvalue
 %%%%%%% need maforceANM.m,readkdatModesANM.m %%%%%%%%%%%
+if ~exist('cutOff','var')
+    cutOff=15;
+end
 resnum=length(ca);
-[hes]=makeconANM(ca,resnum);
+[hes]=makeconANM(ca,resnum,cutOff);
 [U,S]=modesANM(hes,resnum);
 
 %U(atomnum/3,mode)
