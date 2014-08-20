@@ -1,4 +1,4 @@
-function [contactMatrix,contactNum] = getContactMatrix(pdb,cutOff)
+function [contactMatrix,contactNum,pairwiseDistance] = getContactMatrix(pdb,cutOff)
 %%%%%%%%%%% need pairwiseDistance %%%%%%%%%%%%%%%%%%%
 % input:
 %   pdb is the structure gotten from cafrompdb.
