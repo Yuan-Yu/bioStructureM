@@ -1,4 +1,4 @@
-function [ ca,S ] =ANM(ca,mode,cutOff)
+function [ ca,S ] =ANM(ca,mode,cutOff,contactConstant,bondConstant,bond)
 %%%%%%% need maforceANM.m,readkdatModesANM.m %%%%%%%%%%%
 % input:	
 %	ca is the object gotten from cafrompdb
@@ -15,12 +15,13 @@ function [ ca,S ] =ANM(ca,mode,cutOff)
 if ~exist('cutOff','var')
     cutOff=15;
 end
+if ~exist('contactConstant','var')
+    contactConstant=1;
+    bondConstant=1;
+    bond=0;
+end
 resnum=length(ca);
-[hes]=getANMHes(ca,cutOff,1,1,0);
-% [U,S]=eigs(hes,mode+6,'sm');
-% U=fliplr(U);
-% S=fliplr(S);
-%U(atomnum/3,mode)
+[hes]=getANMHes(ca,cutOff,contactConstant,bondConstant,bond);
 if resnum>210
     [U,S]=eigs(hes,mode+6,'sm');
     U=fliplr(U);

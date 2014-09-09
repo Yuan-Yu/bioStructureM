@@ -22,23 +22,22 @@ line = fgetl(fid);
 % altloc double(sscanf(line(17:17),'%c'))
 while ischar(line)
     if(length(line)>=66)
-        if isequal(sscanf(line(1:6),'%c'),'ATOM  ') || isequal(sscanf(line(1:6),'%c'),'HETATM')
+         if ~isempty(regexp(line,'^ATOM|^HETATM','once'))
             %if  (sscanf(line(23:26),'%i')==lastresno && double(sscanf(line(17:17),'%c'))==currentAltloc && sscanf(line(27:27),'%c')==currentAchar) || sscanf(line(23:26),'%i')~=lastresno %bug test 2014/8/16
-            if  (sscanf(line(23:26),'%i')==lastresno && double(sscanf(line(17:17),'%c'))==currentAltloc)  || sscanf(line(23:26),'%i')~=lastresno %bug test 2014/8/16
+            if  (sscanf(line(23:26),'%i')==lastresno && double(sscanf(line(17:17),'%c'))==currentAltloc)  || sscanf(line(23:26),'%i')~=lastresno 
 				j=j+1;
                 ca(j).record  =  sscanf(line(1:6),'%c');
                 ca(j).atomno  =  sscanf(line(7:12),'%i');
                 ca(j).atmname =  strtrim(line(12:16));                
                 ca(j).resname =  sscanf(line(18:20),'%c');
-                ca(j).resno =  sscanf(line(23:26),'%i');
+                ca(j).resno =  sscanf(line(23:27),'%c');        %bug test 2014/9/9
                 ca(j).coord =  sscanf(line(31:54),'%f %f %f');
                 ca(j).bval =  sscanf(line(61:66),'%f');
                 ca(j).subunit =  sscanf(line(22),'%c');
                 ca(j).occupancy=sscanf(line(55:60),'%f');
                 lastresno=sscanf(line(23:26),'%i');
                 currentAltloc=double(sscanf(line(17:17),'%c'));
-				ca(j).achar=sscanf(line(27:27),'%c');
-            %    currentAchar=sscanf(line(27:27),'%c'); %bug test 2014/8/16
+% 				ca(j).achar=sscanf(line(27:27),'%c'); %bug test 2014/9/9
             end
             
         %%%%%% Stop when 'END' is encountered and stop when the first model in NMR file was read%%%%%%%%%%%%
@@ -49,7 +48,7 @@ while ischar(line)
             j=0;
             lastresno=-1000;
             numOfMode=numOfMode+1;
-            mode{numOfMode}=fixPdbBug__(ca);   
+%            mode{numOfMode}=fixPdbBug__(ca);   %bug test 2014/9/9
         end
     end
         line = fgetl(fid);
@@ -60,7 +59,7 @@ if isequal(pdbType,'NMR')&& ~isempty(mode)
 elseif isequal(pdbType,'NMR')
     display('It seems like this pdb is not NMR structure!')
 else
-	ca=fixPdbBug__(ca);
+% 	ca=fixPdbBug__(ca); %bug test 2014/9/9
 end
 fclose(fid);
     
