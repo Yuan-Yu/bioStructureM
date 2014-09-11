@@ -1,8 +1,9 @@
-function [ ca,S ] =ANM(ca,mode,cutOff,contactConstant,bondConstant,bond)
+function [ ca,S ] =ANM(ca,mode,checkeigenvalue,cutOff,contactConstant,bondConstant,bond)
 %%%%%%% need maforceANM.m,readkdatModesANM.m %%%%%%%%%%%
 % input:	
 %	ca is the object gotten from cafrompdb
 %	mode = how many mode do you want
+%   checkeigenvalue
 % return:
 %	ca object that contain the ANM attribute
 %ca(index of atom).ANM matrix is like mode1_x   mode1_y     mode1_z
@@ -22,28 +23,35 @@ if ~exist('contactConstant','var')
     bondConstant=1;
     bond=0;
 end
-
+if ~exist('checkeigenvalue','var')
+    checkeigenvalue=1;
+end
 %% %%%% ANM %% %%%%
 resnum=length(ca);
 [hes]=getANMHes(ca,cutOff,contactConstant,bondConstant,bond);
 if resnum>210
-    [U,S]=eigs(hes,mode+6,'sm');
+    if mode<4 % get more eigenvalue to check the result quality.
+        [U,S]=eigs(hes,4+6,'sm');
+    else
+        [U,S]=eigs(hes,mode+6,'sm');
+    end
     U=fliplr(U);
-    S=fliplr(S);
     S=diag(S);
+    S=fliplr(S')';
 else
     [U,S]=eig(hes);
 	S=diag(S);
 end
 
 %% %%%% check result %% %%%%
-tmp=sum(S(1:10)>10^(-9));
-if tmp>4
-	error('Useful_func:eigError',['The number of zero eigenvalues is less than 6');
-elseif tmp<4
-	error('Useful_func:eigError',['There are more than six zero eigenvalues contained.'])
+if checkeigenvalue
+    tmp=sum(S(1:10)>10^(-9));
+    if tmp>4
+        error('Useful_func:eigError','The number of zero eigenvalues is less than 6');
+    elseif tmp<4
+        error('Useful_func:eigError','There are more than six zero eigenvalues contained.')
+    end
 end
-
 %% %%%% put result into structure %% %%%%
 lastmode=6+mode;
     for i=1:resnum
