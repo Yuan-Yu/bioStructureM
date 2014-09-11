@@ -18,26 +18,32 @@ if fid==-1
     error([s ' file does not exist!!']);
 end
 line = fgetl(fid);
-% revised by Lee 062504 - original:      while isstr(line)  % isstr wont be supported in the later version
-% altloc double(sscanf(line(17:17),'%c'))
+
 while ischar(line)
     if(length(line)>=66)
          if ~isempty(regexp(line,'^ATOM|^HETATM','once'))
-            %if  (sscanf(line(23:26),'%i')==lastresno && double(sscanf(line(17:17),'%c'))==currentAltloc && sscanf(line(27:27),'%c')==currentAchar) || sscanf(line(23:26),'%i')~=lastresno %bug test 2014/8/16
             if  (sscanf(line(23:26),'%i')==lastresno && double(sscanf(line(17:17),'%c'))==currentAltloc)  || sscanf(line(23:26),'%i')~=lastresno 
 				j=j+1;
-                ca(j).record  =  sscanf(line(1:6),'%c');
-                ca(j).atomno  =  sscanf(line(7:12),'%i');
-                ca(j).atmname =  strtrim(line(12:16));                
-                ca(j).resname =  sscanf(line(18:20),'%c');
-                ca(j).resno =  sscanf(line(23:27),'%c');        %bug test 2014/9/9
-                ca(j).coord =  sscanf(line(31:54),'%f %f %f');
-                ca(j).bval =  sscanf(line(61:66),'%f');
-                ca(j).subunit =  sscanf(line(22),'%c');
-                ca(j).occupancy=sscanf(line(55:60),'%f');
+                ca(j).record    =   sscanf(line(1:6),'%c');
+                ca(j).atomno    =   sscanf(line(7:12),'%i');
+                ca(j).atmname   =   strtrim(line(12:16));                
+                ca(j).resname   =   sscanf(line(18:20),'%c');
+                ca(j).resno     =   sscanf(strtrim(line(23:27)),'%c');        %bug test 2014/9/9
+                ca(j).coord     =   sscanf(line(31:54),'%f %f %f');
+                ca(j).bval      =   sscanf(line(61:66),'%f');
+                ca(j).subunit   =   sscanf(line(22),'%c');
+                ca(j).occupancy =   sscanf(line(55:60),'%f');
+                ca(j).segment   =   sscanf(line(73:76),'%s');
+                ca(j).elementSymbol=sscanf(line(77:78),'%s');
+                ca(j).alternate =   sscanf(line(17:17),'%c');
+                if length(line)>=80
+                    ca(j).charge    =   sscanf(line(79:80),'%s');
+                else
+                    ca(j).charge    = '';
+                end
                 lastresno=sscanf(line(23:26),'%i');
                 currentAltloc=double(sscanf(line(17:17),'%c'));
-% 				ca(j).achar=sscanf(line(27:27),'%c'); %bug test 2014/9/9
+           
             end
             
         %%%%%% Stop when 'END' is encountered and stop when the first model in NMR file was read%%%%%%%%%%%%

@@ -12,6 +12,8 @@ function [ ca,S ] =ANM(ca,mode,cutOff,contactConstant,bondConstant,bond)
 %                                   lastmode_x  lastmode_y   lastmode_z
 %	ANMValue is the all eigvalue
 %%%%%%% need maforceANM.m,readkdatModesANM.m %%%%%%%%%%%
+
+%% %%%% set parameter %% %%%%
 if ~exist('cutOff','var')
     cutOff=15;
 end
@@ -20,6 +22,8 @@ if ~exist('contactConstant','var')
     bondConstant=1;
     bond=0;
 end
+
+%% %%%% ANM %% %%%%
 resnum=length(ca);
 [hes]=getANMHes(ca,cutOff,contactConstant,bondConstant,bond);
 if resnum>210
@@ -29,8 +33,18 @@ if resnum>210
     S=diag(S);
 else
     [U,S]=eig(hes);
+	S=diag(S);
 end
 
+%% %%%% check result %% %%%%
+tmp=sum(S(1:10)>10^(-9));
+if tmp>4
+	error('Useful_func:eigError',['The number of zero eigenvalues is less than 6');
+elseif tmp<4
+	error('Useful_func:eigError',['There are more than six zero eigenvalues contained.'])
+end
+
+%% %%%% put result into structure %% %%%%
 lastmode=6+mode;
     for i=1:resnum
         for j=7:lastmode

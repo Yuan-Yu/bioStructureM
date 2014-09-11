@@ -3,7 +3,7 @@ function [resno,chainIDs]=getResnoFromCA(ca)
 % input:
 %   ca
 % return:
-%   resno is a cell
+%   resno is a cell of cell
 %   chainIDs is a array
 %%%%%% need %%%%%%%%
 chainIDs=unique([ca.subunit]);
@@ -11,5 +11,5 @@ numOfCahin=length(chainIDs);
 resno=cell(1,numOfCahin);
 for i=1:numOfCahin
     chain=getChainFromCa(ca,chainIDs(i));
-    resno{i}=[chain.resno];
+    resno{i}={chain.resno};
 end

@@ -7,20 +7,20 @@ function [newCA1,newCA2,StrX,StrY]=oneChainExtractSameCA(ca1,ca2)
     tempca2=getAtomByAtomName(ca2,'CA');
 %% 
     indexOfres=1;
-    resno1=[];
+    resno1={};
     for i=1:length(tempca1)
         if dict.containsKey(tempca1(i).resname)
             resName1(indexOfres,1)=dict.get(tempca1(i).resname);
-            resno1=[resno1;tempca1(i).resno];
+            resno1=[resno1,tempca1(i).resno];
             indexOfres=indexOfres+1;
         end
     end
     indexOfres=1;
-    resno2=[];
+    resno2={};
     for i=1:length(tempca2)
         if dict.containsKey(tempca2(i).resname)
             resName2(indexOfres,1)=dict.get(tempca2(i).resname);
-            resno2=[resno2;tempca2(i).resno];
+            resno2=[resno2,tempca2(i).resno];
             indexOfres=indexOfres+1;
         end
     end

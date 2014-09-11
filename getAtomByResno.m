@@ -15,15 +15,15 @@ function newca=getAtomByResno(ca,resno,chainIDs)
 % return:
 %   ca is the object that contain the atom.
 %%%%%%%%%%% need %%%%%%%%%%%%
-if ~iscell(resno)
-	resnoMatrix=[ca.resno];
+ if ~exist('chainIDs','var')
+	resnoMatrix={ca.resno};
 	index=ismember(resnoMatrix,resno);
 	newca=ca(index);
 else
     newca=[];
     for i=1:length(chainIDs)
         chain=getChainFromCa(ca,chainIDs(i));
-        resnoMatrix=[chain.resno];
+        resnoMatrix={chain.resno};
         index=ismember(resnoMatrix,resno{i});
         newca=[newca,chain(index)];
     end

@@ -21,9 +21,11 @@ contactMatrix=getContactMatrix(pdb,cutOff);
 S=diag(S);
 
 if S(1)>10^(-9)
-    error('warning: the fist eigenvalue is not zero.');
+    error('Useful_func:eigError','warning: the fist eigenvalue is not zero.');
 end
-
+if S(2)<10^(-9)
+	error('Useful_func:eigError','warning: There are more than one zero eigenvalue.')
+end
 lastMode=1+mode;
 for i=1:length(pdb)
     for j=2:lastMode
