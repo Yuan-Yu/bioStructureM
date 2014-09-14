@@ -6,7 +6,6 @@ end
 j=0;
 lastresno=-1000;
 numOfMode=0;
-flag=0;
 mode={};
 ca(1).resname =[];
 ca(1).atmname =[];
@@ -47,43 +46,11 @@ while ischar(line)
                     ca(j).segment   =   sscanf(line(73:76),'%s');
                     ca(j).elementSymbol=sscanf(line(77:78),'%s');
                     ca(j).charge    = '';
-                    if ~strcmp(sscanf(line(73:76),'%s'),strtrim(line(73:76))) || ~strcmp(sscanf(line(77:78),'%s'),strtrim(line(77:78)))
-                        error('fuck!!!')
-                        flag=1;
-                    end
                 else
                     ca(j).charge    =   '';
                     ca(j).segment   =   '';
                     ca(j).elementSymbol='';
                 end
-                        %% just for test 2014/9/14
-
-                  if ~strcmp(sscanf(strtrim(line(1:6)),'%c'),record)
-                      display([sscanf(line(1:6),'%c') ' 1 ' record]);
-                       display(length(sscanf(line(1:6),'%c')));
-                       display(length(record));
-                      flag=1;
-                  end
-                  if ~strcmp(sscanf(line(18:20),'%c'),line(18:20))
-                      display([sscanf(line(18:20),'%c') ' 2 ' line(18:20)]);
-                      flag=1;
-                  end
-                  if ~strcmp(sscanf(strtrim(line(23:27)),'%c'),resno) 
-                      display([sscanf(strtrim(line(23:27)),'%c') ' 3 ' resno]);
-                      flag=1;
-                  end
-                  if ~strcmp(sscanf(line(22),'%c'),line(22))
-                      display([sscanf(line(22),'%c') ' 4 ' line(22)]);
-                      flag=1;
-                  end
-                  if ~strcmp(sscanf(line(17:17),'%c'),Altloc) 
-                      display([sscanf(line(17:17),'%c') ' 5 ' Altloc]);
-                      flag=1;
-                  end
-                  if flag
-                      error('fuck');
-                  end
-                        %% 
                 lastresno=resno;
                 currentAltloc=Altloc;
            
@@ -111,5 +78,3 @@ else
 % 	ca=fixPdbBug__(ca); %bug test 2014/9/9
 end
 fclose(fid);
-    
-

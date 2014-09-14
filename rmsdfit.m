@@ -11,7 +11,7 @@ end
 % also find:
 % eRMSD = std(R*fromXYZ + T - toXYZ)
 % which will rotate (R: 3x3 matrix) and translate (T: 3 x 1 vector)
-% coordinates: fromXYZ (3 x N matrix) to toXYZ (3 x N matrix) and returns root-mean-squared error (eRMSD)
+% coordinates: fromXYZ (N x 3 matrix) to toXYZ (N x 3 matrix) and returns root-mean-squared error (eRMSD)
 % ||R*fromXYZ + T - toXYZ||^2
 
   ln1 = size(fromXYZ,1);

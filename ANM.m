@@ -4,6 +4,10 @@ function [ ca,S ] =ANM(ca,mode,checkeigenvalue,cutOff,contactConstant,bondConsta
 %	ca is the object gotten from cafrompdb
 %	mode = how many mode do you want
 %   checkeigenvalue
+%   cutOff 
+%   contactConstant
+%   bondConstant
+%   bond
 % return:
 %	ca object that contain the ANM attribute
 %ca(index of atom).ANM matrix is like mode1_x   mode1_y     mode1_z
