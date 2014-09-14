@@ -6,6 +6,7 @@ end
 j=0;
 lastresno=-1000;
 numOfMode=0;
+flag=0;
 mode={};
 ca(1).resname =[];
 ca(1).atmname =[];
@@ -20,29 +21,71 @@ end
 line = fgetl(fid);
 
 while ischar(line)
-    if(length(line)>=66)
-         if ~isempty(regexp(line,'^ATOM|^HETATM','once'))
-            if  (sscanf(line(23:26),'%i')==lastresno && double(sscanf(line(17:17),'%c'))==currentAltloc)  || sscanf(line(23:26),'%i')~=lastresno 
+    lenOfline=length(line);
+    record=regexp(line,'^ATOM|^HETATM','once','match');
+    if(lenOfline>=66)
+         if ~isempty(record)
+            resno=strtrim(line(23:27));
+            Altloc=line(17:17);
+            if  (strcmp(resno,lastresno) && double(Altloc)==currentAltloc)  || ~strcmp(resno,lastresno)
 				j=j+1;
-                ca(j).record    =   sscanf(line(1:6),'%c');
+                ca(j).record    =   record;
                 ca(j).atomno    =   sscanf(line(7:12),'%i');
                 ca(j).atmname   =   strtrim(line(12:16));                
-                ca(j).resname   =   sscanf(line(18:20),'%c');
-                ca(j).resno     =   sscanf(strtrim(line(23:27)),'%c');        %bug test 2014/9/9
+                ca(j).resname   =   line(18:20);
+                ca(j).resno     =   resno;        %bug test 2014/9/9
                 ca(j).coord     =   sscanf(line(31:54),'%f %f %f');
                 ca(j).bval      =   sscanf(line(61:66),'%f');
-                ca(j).subunit   =   sscanf(line(22),'%c');
+                ca(j).subunit   =   line(22);
                 ca(j).occupancy =   sscanf(line(55:60),'%f');
-                ca(j).segment   =   sscanf(line(73:76),'%s');
-                ca(j).elementSymbol=sscanf(line(77:78),'%s');
-                ca(j).alternate =   sscanf(line(17:17),'%c');
-                if length(line)>=80
+                ca(j).alternate =   Altloc;
+                if lenOfline>=80
                     ca(j).charge    =   sscanf(line(79:80),'%s');
-                else
+                    ca(j).segment   =   sscanf(line(73:76),'%s');
+                    ca(j).elementSymbol=sscanf(line(77:78),'%s');
+                elseif lenOfline>=78
+                    ca(j).segment   =   sscanf(line(73:76),'%s');
+                    ca(j).elementSymbol=sscanf(line(77:78),'%s');
                     ca(j).charge    = '';
+                    if ~strcmp(sscanf(line(73:76),'%s'),strtrim(line(73:76))) || ~strcmp(sscanf(line(77:78),'%s'),strtrim(line(77:78)))
+                        error('fuck!!!')
+                        flag=1;
+                    end
+                else
+                    ca(j).charge    =   '';
+                    ca(j).segment   =   '';
+                    ca(j).elementSymbol='';
                 end
-                lastresno=sscanf(line(23:26),'%i');
-                currentAltloc=double(sscanf(line(17:17),'%c'));
+                        %% just for test 2014/9/14
+
+                  if ~strcmp(sscanf(strtrim(line(1:6)),'%c'),record)
+                      display([sscanf(line(1:6),'%c') ' 1 ' record]);
+                       display(length(sscanf(line(1:6),'%c')));
+                       display(length(record));
+                      flag=1;
+                  end
+                  if ~strcmp(sscanf(line(18:20),'%c'),line(18:20))
+                      display([sscanf(line(18:20),'%c') ' 2 ' line(18:20)]);
+                      flag=1;
+                  end
+                  if ~strcmp(sscanf(strtrim(line(23:27)),'%c'),resno) 
+                      display([sscanf(strtrim(line(23:27)),'%c') ' 3 ' resno]);
+                      flag=1;
+                  end
+                  if ~strcmp(sscanf(line(22),'%c'),line(22))
+                      display([sscanf(line(22),'%c') ' 4 ' line(22)]);
+                      flag=1;
+                  end
+                  if ~strcmp(sscanf(line(17:17),'%c'),Altloc) 
+                      display([sscanf(line(17:17),'%c') ' 5 ' Altloc]);
+                      flag=1;
+                  end
+                  if flag
+                      error('fuck');
+                  end
+                        %% 
+                lastresno=resno;
+                currentAltloc=Altloc;
            
             end
             
