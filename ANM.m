@@ -33,7 +33,7 @@ end
 %% %%%% ANM %% %%%%
 resnum=length(ca);
 [hes]=getANMHes(ca,cutOff,contactConstant,bondConstant,bond);
-if resnum>210
+if (mode+6)<(resnum*0.20) %optimize the speed
     if mode<4 % get more eigenvalue to check the result quality.
         [U,S]=eigs(hes,4+6,'sm');
     else
