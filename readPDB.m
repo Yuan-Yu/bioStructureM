@@ -30,13 +30,25 @@ end
 
 structure=cafrompdb(pdbName,pdbType);
 
+%% %%%%%% check missing residues %%%%%%%%% 
 if checkMissing
 	chains=separatePDBByChain(structure);
+	flag=0;
+	ermsg=[];
 	for chainIndex=1:length(chains)
-		bonds=getBondLengths(getAtomByAtomName(chains{chainIndex},'CA'));
+		currentChain=getAtomByAtomName(chains{chainIndex},'CA')
+		bonds=getBondLengths(currentChain);
 		if ~isempty(find(bonds>4.3,1))
-			error(['The ' pdbName ' have some missing residues']);
+			flag=1;
+            miss=find(bonds>4.3);
+			ermsg=strcat(ermsg,[currentChain(1).subunit '\n']);
+            for i=miss'
+                ermsg=strcat(ermsg,['\tresno: ' currentChain(i).resno ' to ' currentChain(i+1).resno ' distance=' num2str(bonds(i)) '\n']);
+            end
 		end
+	end
+	if flag
+		error('Useful_func:missResiduesError',sprintf(['The ' pdbName ' have some missing residues:\n' ermsg]));
 	end
 end
     
