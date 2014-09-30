@@ -1,4 +1,4 @@
-function [new  score s_table]=alignment(seq1,seq2)
+function [new  ,score, s_table,t_table]=alignSeq(seq1,seq2)
     %seq1 and seq2 is Fasta sequence.
     s_match=2;
     s_miss=-1;
