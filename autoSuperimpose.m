@@ -4,15 +4,20 @@ function [fromStructure,RMSD,R,T]=autoSuperimpose(fromStructure,toStructure,refe
 %   fromStructure and toStructure are object gotten from cafrompdb 
 %	fromStructure will be superimposed.
 %   toStructure is the referenced structure.
-%   referenceAtomName
+%   referenceAtomName (option)
 % return:
 %   fromStructure is superimposed structure.
 %	RMSD
 %	R is the rotation matrix
 %	T is the transpose matrix
 %%%%%%%%%% need getAtomByAtomName,extractSameCA,getCoordfromca,refreshCoordToCA%%%%%%%%%%%
-    tempfromStructure=getAtomByAtomName(fromStructure,referenceAtomName);
-    temptoStructure=getAtomByAtomName(toStructure,referenceAtomName);
+	if exist(referenceAtomName)
+		tempfromStructure=getAtomByAtomName(fromStructure,referenceAtomName);
+		temptoStructure=getAtomByAtomName(toStructure,referenceAtomName);
+	else
+		tempfromStructure=fromStructure;
+		temptoStructure=toStructure;
+	end
     [tempfromStructure,temptoStructure]=extractSameCA(tempfromStructure,temptoStructure);
     [R,T,RMSD]=rmsdfit(getCoordfromca(temptoStructure),getCoordfromca(tempfromStructure));
     fromCoord=getCoordfromca(fromStructure);

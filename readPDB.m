@@ -36,7 +36,7 @@ if checkMissing
 	flag=0;
 	ermsg=[];
 	for chainIndex=1:length(chains)
-		currentChain=getAtomByAtomName(chains{chainIndex},'CA')
+		currentChain=getAtomByAtomName(chains{chainIndex},'CA');
 		bonds=getBondLengths(currentChain);
 		if ~isempty(find(bonds>4.3,1))
 			flag=1;
