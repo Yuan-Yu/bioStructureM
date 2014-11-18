@@ -55,17 +55,17 @@ while ischar(line)
                 currentAltloc=Altloc;
            
             end
-            
+         end    
         %%%%%% Stop when 'END' is encountered and stop when the first model in NMR file was read%%%%%%%%%%%%
-        elseif(isequal(sscanf(line(1:6),'%c'),'END   ')||(isequal(sscanf(line(1:6),'%c'),'ENDMDL')&&~isequal(pdbType,'NMR')))
-                break;
+    elseif(~isempty(regexp(line,'END$','once'))||(~isempty(regexp(line,'ENDMDL$','once'))&&~isequal(pdbType,'NMR')))
+            break;
         %%%%%% read all mode of NMR %%%%%%%%%%%%           
-        elseif(isequal(sscanf(line(1:6),'%c'),'ENDMDL'))
-            j=0;
-            lastresno=-1000;
-            numOfMode=numOfMode+1;
-%            mode{numOfMode}=fixPdbBug__(ca);   %bug test 2014/9/9
-        end
+    elseif ~isempty(regexp(line,'ENDMDL$','once'))
+        j=0;
+        lastresno=-1000;
+        numOfMode=numOfMode+1;
+        mode{numOfMode}=ca;
+        ca=[];
     end
         line = fgetl(fid);
 end
