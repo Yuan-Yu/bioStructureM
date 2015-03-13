@@ -20,6 +20,7 @@ end
 line = fgetl(fid);
 
 while ischar(line)
+    line=deblank(line);
     lenOfline=length(line);
     record=regexp(line,'^ATOM|^HETATM','once','match');
     if(lenOfline>=66)
