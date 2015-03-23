@@ -1,4 +1,7 @@
-function [new  ,score, s_table,t_table]=alignSeq(seq1,seq2)
+function [new  ,score, s_table,t_table]=alignSeq(seq1,seq2,showClearAlign)
+    if ~exist('showClearAlign','var')
+        showClearAlign=0;
+    end
     %seq1 and seq2 is Fasta sequence.
     s_match=2;
     s_miss=-1;
@@ -23,11 +26,34 @@ function [new  ,score, s_table,t_table]=alignSeq(seq1,seq2)
     %calculate the table
     for r=1:len2
         for c=1:len1
-            [ v index ]=scores(r,c,w,match_table,s_table);
+            %[ v, index ]=scores(s_table(r,c),s_table(r,c+1),s_table(r+1,c),w,match_table(r,c));
+            dig=s_table(r,c)+match_table(r,c);
+            up=s_table(r,c+1)+w;
+            left=s_table(r+1,c)+w;
+            if dig>=up
+                v=dig;
+                index=1;
+                if v<left
+                    v=left;
+                    index=3;
+                end
+            else 
+                v=up;
+                index=2;
+                if v<left
+                    v=left;
+                    index=3;
+                end
+            end
             s_table(r+1,c+1)=v;
             t_table(r,c)=index;
         end      
     end
     score=s_table(end);
     %trackback
-    new=track(seq1,seq2,t_table);
+    [new,align]=track(seq1,seq2,t_table);
+    length(align)
+    length(new)
+    if showClearAlign
+        new =[new(1,:);align;new(2,:)];
+    end

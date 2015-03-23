@@ -47,6 +47,8 @@ while ischar(line)
                     ca(j).segment   =   sscanf(line(73:76),'%s');
                     ca(j).elementSymbol=sscanf(line(77:78),'%s');
                     ca(j).charge    = '';
+                elseif lenOfline>=76
+                    ca(j).segment   =   sscanf(line(73:76),'%s');
                 else
                     ca(j).charge    =   '';
                     ca(j).segment   =   '';
