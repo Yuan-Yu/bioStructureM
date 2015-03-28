@@ -28,7 +28,7 @@ if ~exist('checkMissing','var')
     checkMissing=0;
 end
 
-structure=cafrompdb(pdbName,pdbType);
+structure=atomfrompdb(pdbName,pdbType);
 
 %% %%%%%% check missing residues %%%%%%%%% 
 if checkMissing
