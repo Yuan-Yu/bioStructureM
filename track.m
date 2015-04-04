@@ -39,7 +39,7 @@ function [new,align]=track(seq1,seq2,t_table)
         if c==0
            newseq2=[seq2(1:r) newseq2];
             newseq1=[char(ones(1,r)*45) newseq1];
-            align=[char(ones(1,c)*32) align];
+            align=[char(ones(1,r)*32) align];
             break;
         end   
      end
