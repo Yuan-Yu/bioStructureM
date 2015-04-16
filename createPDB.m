@@ -29,10 +29,10 @@ function createPDBbyCA( ca,name )
 																					ca(i).charge);
         end 
    else
-       for i=1:length(ca)
-           fprintf(fid,'MODEL       %2i\n',i);
-           model=ca{i};
-           for j=1:length(model)
+       for j=1:length(ca)
+           fprintf(fid,'MODEL       %2i\n',j);
+           model=ca{j};
+           for i=1:length(model)
                 resno=regexp(model(i).resno,'[0-9]*','match');
                 insertion=regexpi(model(i).resno,'[A-Z]','match');
                 if isempty(insertion)

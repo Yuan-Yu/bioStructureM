@@ -37,14 +37,15 @@ mode={};
 
 text = fileread(pdbFileName);
 % get the line that contain start from "ATOM","HETATM",ENDMDL or END.
-lineList=regexp(text,'((^ATOM|^HETATM).*?\n)||((?<=\n)(ATOM|HETATM).*?\n)||(?<=\n)ENDMDL||(?<=\n)END','match');
+lineList=regexp(text,'((?<=\n)(ATOM|HETATM).*?\n)||(?<=\n)ENDMDL||(?<=\n)END||((^ATOM|^HETATM).*?\n)||((?<=\n)(ATOM|HETATM).*?$)','match');
 
 lenOfLineList=length(lineList);
 % initiate a structure array.
 ca(lenOfLineList).resname =[];
 
 for lineIndex=1:lenOfLineList
-    line=deblank(lineList{lineIndex});
+    %line=deblank(lineList{lineIndex});
+    line=lineList{lineIndex};
     lenOfline=length(line);
     if(lenOfline>=66)
         resno=strtrim(line(23:27));
