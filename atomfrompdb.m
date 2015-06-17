@@ -22,7 +22,7 @@ function [ca] =atomfrompdb(pdbFileName,pdbType,setAlternate)
 %                                 alternate
 %                                 charge
 %   if pdbType is NMR,a cellarry of structure will be return.
-%%%%%%%%%%%%%%%%% need %%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%% need %%%%%%%%%%%%%%%
 if ~exist('pdbType', 'var')
     pdbType='X-RAY';
 end
