@@ -1,4 +1,4 @@
-function createPDBbyCA( ca,name )
+function createPDB( ca,name )
 %CREATPDBBYCA Summary of this function goes here
 %   Detailed explanation goes here
 % 13 - 16        Atom            Atom name 
