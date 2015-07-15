@@ -1,0 +1,23 @@
+#If you want to append operators to the "as", please follow the pattern:
+#
+#           firstWord:regexp:funcName:numofArg:ISP:ICP
+#
+# firstWord-- first word of the operator in command line
+# regexp-- the regular expression of the the operator
+# funcName-- the corresponding function name of the operator 
+# numofArg-- the number of arguments of the operator
+# ISP-- the corresponding ISP value of operator
+# ICP-- the corresponding ICP value of operator
+#
+# Note : The default value of ISP and ICP is 2 and 3.
+#
+and:and:and:2:2:3
+or:or:or:2:2:3
+(:\(:(:1:1:6
+):\):):1:5:5
+within:within{1}\s+.*?\s.*?of:within:2:3:3
+|:\|:or:2:2:3
+&:\&:and:2:2:3
+byres:byres:byres:1:4:3
+not:not:not:1:4:3
+bychain:bychain:bychain:1:4:3

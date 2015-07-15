@@ -27,8 +27,13 @@ end
 if ~exist('checkMissing','var')
     checkMissing=0;
 end
-
-structure=atomfrompdb(pdbName,pdbType);
+try
+    structure=atomfrompdb(pdbName,pdbType);
+catch e
+    if length(strtrim(pdbName))==4
+        structure=atomfromPDBID(pdbName,pdbType);
+    end
+end
 
 %% %%%%%% check missing residues %%%%%%%%% 
 if checkMissing
