@@ -52,8 +52,8 @@ function [new  ,score, s_table,t_table]=alignSeq(seq1,seq2,showClearAlign)
     score=s_table(end);
     %trackback
     [new,align]=track(seq1,seq2,t_table);
-    length(align)
-    length(new)
+    %length(align)
+    %length(new)
     if showClearAlign
         new =[new(1,:);align;new(2,:)];
     end
