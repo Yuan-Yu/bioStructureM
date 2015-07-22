@@ -6,7 +6,13 @@ function [newCA1,newCA2]=extractSameCA(pdbStructure1,pdbStructure2,displayAlign)
 %	displayAlign : set 1 will display the alignment result.
 %  Note:
 %   Do not allow amino acid and nucleotide in same chain.  
-%   The chain order should be same at each ca. 
+%   The chain IDs will not be checked, so pdbStructure1 and pdbStructure2 should have exactly the same chain order.
+%   Additional chains in one pdbStructure but not in the other should be
+%   placed at the end of the pdbStructure, and will be removed
+%   automatically
+%   Ex:
+%   Chain of pdbStructure1: ABDEFGCIJ
+%   Chain of pdbStructure2: ABDEFG--- 
 % Return:
 %   newCA1 : same or similar element 
 %   newCA2 : same or similar element 

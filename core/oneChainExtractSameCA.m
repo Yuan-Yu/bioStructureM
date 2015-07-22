@@ -5,6 +5,7 @@ function [newCA1,newCA2,StrX,StrY]=oneChainExtractSameCA(ca1,ca2)
     load('dict.mat');
     tempca1=getAtomByAtomName(ca1,'CA');
     tempca2=getAtomByAtomName(ca2,'CA');
+try
 %% 
     indexOfres=1;
     resno1={};
@@ -30,4 +31,9 @@ function [newCA1,newCA2,StrX,StrY]=oneChainExtractSameCA(ca1,ca2)
     %get the fist non-zero column index
     newCA1=getAtomByResno(ca1,resno1(Index_Seq1_Seq2(1,col(1):end)));
     newCA2=getAtomByResno(ca2,resno2(Index_Seq1_Seq2(2,col(1):end)));
+catch e
+    baseException = MException('core:oneChainExtractSameCA',['can not align chain ' ca1(1).subunit ' of pdbStructure1 to chain ' ca2(1).subunit ' of pdbStructure2']);
+    baseException = addCause(baseException,e);
+    throw(baseException);
+end
         

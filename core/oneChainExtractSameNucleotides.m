@@ -1,7 +1,7 @@
 function [sameCa1,sameCa2,result]=oneChainExtractSameNucleotides(ca1,ca2)
 try
-    pAtoms1=getAtomByAtomName(ca1,'P');
-    pAtoms2=getAtomByAtomName(ca2,'P');
+    pAtoms1=three2oneNucleic(getAtomByAtomName(ca1,'P'));
+    pAtoms2=three2oneNucleic(getAtomByAtomName(ca2,'P'));
     seq1=[pAtoms1.resname];
     seq2 = [pAtoms2.resname];
     seq1 = regexprep(seq1,'\s+','');
@@ -32,6 +32,6 @@ try
 catch e
     baseException = MException('core:oneChainExtractSameNucleotides',['can not align chain ' ca1(1).subunit ' of pdbStructure1 to chain ' ca2(1).subunit ' of pdbStructure2']);
     baseException = addCause(baseException,e);
-    throw(baseException)
+    throw(baseException);
 end
 
