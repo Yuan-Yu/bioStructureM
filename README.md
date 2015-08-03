@@ -1,0 +1,3 @@
+# bioStructureM
+a basic matlab package  for analysis protein structure
+Building.....
