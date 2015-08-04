@@ -14,7 +14,7 @@ atomNum=length(PDBStructure);
 all_names = {PDBStructure.atmname};
 logicIndexArray=strcmp(all_names,'CA');
 index =find(logicIndexArray);
-startIndex = min(index)-10;
+startIndex = min(index)-40;
 if startIndex<=0
     startIndex =1;
 end
