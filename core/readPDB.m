@@ -29,6 +29,15 @@ if ~exist('checkMissing','var')
 end
 try
     structure=atomfrompdb(pdbName,pdbType);
+    if ~iscell(structure)
+        structure = setElementSymbol(structure);
+        structure = setMass(structure);
+    else 
+        for i =1:length(structure)
+            structure{i}=setElementSymbol(structure{i});
+            structure{i}=setMass(structure{i});
+        end
+    end
 catch e
     if length(strtrim(pdbName))==4
         structure=atomfromPDBID(pdbName,pdbType);
