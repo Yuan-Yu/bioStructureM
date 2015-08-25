@@ -4,7 +4,7 @@ function [newCA1,newCA2,StrX,StrY]=oneChainExtractSameCA(ca1,ca2)
 %return newCA1 and newCA2 is the object get from cafrompdb. But only contain the same Ca atom.
     load('dict.mat');
     alltmpID1 = [ca1.tmpResID];
-    alltmpID2 = [ca1.tmpResID];
+    alltmpID2 = [ca2.tmpResID];
     tempca1=getAtomByAtomName(ca1,'CA');
     tempca2=getAtomByAtomName(ca2,'CA');
 try
