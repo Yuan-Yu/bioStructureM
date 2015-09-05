@@ -35,11 +35,11 @@ try
     structure=atomfrompdb(pdbName,pdbType);
     if ~iscell(structure) && isAssignMass
         structure = setElementSymbol(structure);
-        structure = setMass(structure);
+        structure = assignMass(structure);
     elseif isAssignMass
         for i =1:length(structure)
             structure{i}=setElementSymbol(structure{i});
-            structure{i}=setMass(structure{i});
+            structure{i}=assignMass(structure{i});
         end
     end
 catch e

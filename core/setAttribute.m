@@ -10,8 +10,15 @@ function [pdbStrcture] = setAttribute(pdbStrcture,index,values)
 %   pdbStrcture
 %%%%%%%%%%%%%%%%%%%
 
+% Transform logical index to index
 if islogical(index)
     index = find(index);
 end
+numAtom = length(index);
+valuesSize = size(values);
+length(valuesSize)
+if sum(valuesSize) == length(valuesSize)
 
-if 
+else
+    for i = 
+end
