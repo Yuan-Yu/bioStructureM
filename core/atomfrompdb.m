@@ -42,7 +42,9 @@ lineList=regexp(text,'((?<=\n)(ATOM|HETATM).*?\n)||(?<=\n)ENDMDL||(?<=\n)END||((
 lenOfLineList=length(lineList);
 % initiate a structure array.
 ca(lenOfLineList).resname =[];
-
+currentInternalResno=0;
+lastResno =-100000;
+lastiCode = '!';
 for lineIndex=1:lenOfLineList
     %line=deblank(lineList{lineIndex});
     line=lineList{lineIndex};
@@ -63,6 +65,14 @@ for lineIndex=1:lenOfLineList
             ca(numOfRes).subunit   =   line(22);
             ca(numOfRes).occupancy =   sscanf(line(55:60),'%f');
             ca(numOfRes).alternate =   Altloc;
+            %%% Build interal residue number.  new attribute testing
+            if ~strcmp(resno,lastResno) || lastiCode ~= line(27)
+                lastResno = resno;
+                lastiCode = line(27);
+                currentInternalResno = currentInternalResno + 1;
+            end
+            ca(numOfRes).internalResno = currentInternalResno;
+            %%%
             if lenOfline>=80
                 ca(numOfRes).charge    =   strtrim(line(79:80));
                 ca(numOfRes).segment   =   strtrim(line(73:76));
@@ -86,6 +96,11 @@ for lineIndex=1:lenOfLineList
             break;
         %%%%%% read all mode of NMR %%%%%%%%%%%%           
     elseif ~isempty(regexp(line,'ENDMDL$','once'))
+        % test
+        currentInternalResno=0;
+        lastResno =-100000;
+        lastiCode = '!';
+        %
         ca(numOfRes+1:end)=[];
         numOfRes=0;
         numOfMode=numOfMode+1;

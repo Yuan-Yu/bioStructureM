@@ -1,7 +1,7 @@
 function [sameCa1,sameCa2,result]=oneChainExtractSameNucleotides(ca1,ca2)
     try
-        resno1=[ca1.tmpResID];
-        resno2=[ca2.tmpResID];
+        resno1=[ca1.internalResno];
+        resno2=[ca2.internalResno];
         pAtoms1=three2oneNucleic(getAtomByAtomName(ca1,'P'));
         pAtoms2=three2oneNucleic(getAtomByAtomName(ca2,'P'));
         seq1=[pAtoms1.resname];
@@ -27,8 +27,8 @@ function [sameCa1,sameCa2,result]=oneChainExtractSameNucleotides(ca1,ca2)
 
         samePAtom1=pAtoms1(indexOfCa1);
         samePAtom2=pAtoms2(indexOfCa2);
-        sameCa1=ca1(ismember(resno1,[samePAtom1.tmpResID]));
-        sameCa2=ca2(ismember(resno2,[samePAtom2.tmpResID]));
+        sameCa1=ca1(ismember(resno1,[samePAtom1.internalResno]));
+        sameCa2=ca2(ismember(resno2,[samePAtom2.internalResno]));
         if length(sameCa1)~=length(sameCa2)
             baseException = MException('core:oneChainExtractSameCA','size defferent between chains');
             throw(baseException);

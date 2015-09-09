@@ -11,7 +11,7 @@ function [fromStructure,RMSD,R,T]=autoSuperimpose(fromStructure,toStructure,refe
 %	R is the rotation matrix
 %	T is the transpose matrix
 %%%%%%%%%% need getAtomByAtomName,extractSameCA,getCoordfromca,refreshCoordToCA%%%%%%%%%%%
-	if exist(referenceAtomName)
+	if exist('referenceAtomName','var')
 		tempfromStructure=getAtomByAtomName(fromStructure,referenceAtomName);
 		temptoStructure=getAtomByAtomName(toStructure,referenceAtomName);
 	else

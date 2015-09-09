@@ -26,10 +26,7 @@ function [newCA1,newCA2]=extractSameCA(pdbStructure1,pdbStructure2,displayAlign)
     numOfChain=min(length(chainID1),length(chainID2));
     sameChain1=cell(1,numOfChain);
     sameChain2=cell(1,numOfChain);
-    pdbStructure1 = getTmpResID(pdbStructure1);
-    pdbStructure2 = getTmpResID(pdbStructure2);
     for i=1:numOfChain
-
         tmpChain1=getChainFromCa(pdbStructure1,chainID1(i));
         tmpChain2=getChainFromCa(pdbStructure2,chainID2(i));
         isAmino= isempty(regexp(tmpChain1(1).resname,'(?<=^\s*)\w{1}(?=\s*$)','ONCE'));
@@ -54,8 +51,6 @@ function [newCA1,newCA2]=extractSameCA(pdbStructure1,pdbStructure2,displayAlign)
         newCA1=[newCA1,sameChain1{i}];
         newCA2=[newCA2,sameChain2{i}];
     end
-    newCA1 = rmfield(newCA1,'tmpResID');
-    newCA2 = rmfield(newCA2,'tmpResID');
 end
 function PDBStructure=getTmpResID(PDBStructure)
     current_ResidueID=1;

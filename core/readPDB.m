@@ -1,9 +1,10 @@
-function [structure]=readPDB(pdbName,checkMissing,pdbType)
+function [structure]=readPDB(pdbName,checkMissing,pdbType,isAssignMass)
 %%%%%%%%%%%%%%%% need cafrompdb,getAtomByAtomName,getBondLengths%%%%%%%%%%%%%%%%%%
 % input:
 %   pdbName: The name of the pdb file
 %   checkMissing: The value of this is 0 or 1. Setting 0 meams that do not check missing residues.
 %   pdbType: 'X-ray' or 'NMR'. (Default is X-ray).
+%   isAssignMass :This option can be 0 or 1. Default 1 mean assinging mass.
 % return:
 %   structure is a structure array. 
 %		The structure contain attribute below
@@ -27,11 +28,25 @@ end
 if ~exist('checkMissing','var')
     checkMissing=0;
 end
+if ~exist('isAssignMass','var')
+    isAssignMass=1;
+end
 try
     structure=atomfrompdb(pdbName,pdbType);
+    if ~iscell(structure) && isAssignMass
+        structure = setElementSymbol(structure);
+        structure = assignMass(structure);
+    elseif isAssignMass
+        for i =1:length(structure)
+            structure{i}=setElementSymbol(structure{i});
+            structure{i}=assignMass(structure{i});
+        end
+    end
 catch e
     if length(strtrim(pdbName))==4
         structure=atomfromPDBID(pdbName,pdbType);
+    else 
+        rethrow(e);
     end
 end
 
