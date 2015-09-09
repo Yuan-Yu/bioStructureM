@@ -1,24 +1,62 @@
-function [pdbStrcture] = setAttribute(pdbStrcture,index,values)
+function [pdbStructure] = setAttribute(pdbStructure,index,fieldName,values)
 %%%%%%%%%%%%%%%%%%%
 % input:
-%   pdbStrcture
+%   pdbStructure
 %   index: index array or logical array  
+%   feildName:
 %   values: this can be a singal value or value"s". Values
 %       should have the same number of row as the number of atoms which are
-%       assigned.
+%       assigned. The values should be a 2D array or a cell.
 % return:
-%   pdbStrcture
+%   pdbStructure
 %%%%%%%%%%%%%%%%%%%
 
 % Transform logical index to index
 if islogical(index)
     index = find(index);
 end
-numAtom = length(index);
-valuesSize = size(values);
-length(valuesSize)
-if sum(valuesSize) == length(valuesSize)
 
+[row,col]=size(index);
+if row ~=1
+    index = index';
+end
+
+numAtom = length(index);
+[row,col] = size(values);
+if  ischar(values) || (row == 1 && col == 1)
+    if iscell(values)
+        for i = index
+            pdbStructure(i).(fieldName) = values{1};
+        end
+    else 
+        for i = index
+            pdbStructure(i).(fieldName) = values;
+        end
+    end
 else
-    for i = 
+    if row == numAtom
+        if iscell(values)
+            for i = index
+                pdbStructure(i).(fieldName) = values{i,:};
+            end
+        else 
+            for i = index
+                pdbStructure(i).(fieldName) = values(i,:);
+            end
+        end
+    elseif col == numAtom
+        if iscell(values)
+            for i = index
+                pdbStructure(i).(fieldName) = values{:,i};
+            end
+        else 
+            for i = index
+                pdbStructure(i).(fieldName) = values(:,i);
+            end
+        end
+    else
+        for i = index
+                pdbStructure(i).(fieldName) = values;
+        end
+    end
 end
