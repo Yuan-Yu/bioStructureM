@@ -18,7 +18,7 @@ function [fromStructure,RMSD,R,T]=autoSuperimpose(fromStructure,toStructure,refe
 		tempfromStructure=fromStructure;
 		temptoStructure=toStructure;
 	end
-    [tempfromStructure,temptoStructure]=extractSameCA(tempfromStructure,temptoStructure);
+    [tempfromStructure,temptoStructure]=extractSameCA(tempfromStructure,temptoStructure,1);
     [R,T,RMSD]=rmsdfit(getCoordfromca(temptoStructure),getCoordfromca(tempfromStructure));
     fromCoord=getCoordfromca(fromStructure);
     fromCoord=fromCoord*R + repmat(T,length(fromStructure),1);

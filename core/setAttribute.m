@@ -36,22 +36,30 @@ if  ischar(values) || (row == 1 && col == 1)
 else
     if row == numAtom
         if iscell(values)
+            valuesIndex = 1;
             for i = index
-                pdbStructure(i).(fieldName) = values{i,:};
+                pdbStructure(i).(fieldName) = values{valuesIndex,:};
+                valuesIndex = valuesIndex +1;
             end
         else 
+            valuesIndex = 1;
             for i = index
-                pdbStructure(i).(fieldName) = values(i,:);
+                pdbStructure(i).(fieldName) = values(valuesIndex,:);
+                valuesIndex = valuesIndex +1;
             end
         end
     elseif col == numAtom
         if iscell(values)
+            valuesIndex = 1;
             for i = index
-                pdbStructure(i).(fieldName) = values{:,i};
+                pdbStructure(i).(fieldName) = values{:,valuesIndex};
+                valuesIndex = valuesIndex +1;
             end
         else 
+            valuesIndex = 1;
             for i = index
-                pdbStructure(i).(fieldName) = values(:,i);
+                pdbStructure(i).(fieldName) = values(:,valuesIndex);
+                valuesIndex = valuesIndex +1;
             end
         end
     else
