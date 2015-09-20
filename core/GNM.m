@@ -2,9 +2,10 @@ function [pdb]=GNM(pdb,mode,cutOff)
 %%%%%%%%%%%%% need getContactMatrix.m,getPairwiseDistance.m%%%%%%%%%%%%%%%%%%
 % input:
 %   pdb is the structure that gotten from cafrompdb.
+%   mode is a number the meaning is how many mode do you want.
 %   cutOff: if the distance of two atom is less than cutOff,the two atom
 %       is contact to each other.
-%   mode is a number the meaning is how many mode do you want.
+%   
 % return:
 %   pdb is the structure that contain GNM attribute.(ex pdb(indexOfAtom).GNM or pdb(indexOfAtom).GNMValue)
 %   the format is like
