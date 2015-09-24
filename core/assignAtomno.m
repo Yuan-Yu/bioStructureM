@@ -8,5 +8,5 @@ function [pdbStructure] = assignAtomno(pdbStructure)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 for i = 1 : length(pdbStructure)
-    pdbStructure(i).atmno = i;
+    pdbStructure(i).atomno = i;
 end    

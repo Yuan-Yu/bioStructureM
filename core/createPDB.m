@@ -55,7 +55,7 @@ function createPDB( ca,name )
                                                                                                         model(i).elementSymbol,...
                                                                                                         model(i).charge);
            end
-           fprintf(fid,'ENDMDL');
+           fprintf(fid,'ENDMDL\n');
        end
        fprintf(fid,'\n');
    end
