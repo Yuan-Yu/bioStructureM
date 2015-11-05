@@ -18,8 +18,9 @@ for i = 1:numStruc
     minimumFields = intersect( minimumFields, fieldnames( varargin{i}));
 end
 
-tmpDiffField=setdiff(fieldnames( varargin{1}),minimumFields);
+tmpDiffField=setdiff(fieldnames(varargin{1}),minimumFields);
 mergedStructure = rmfield(varargin{1},tmpDiffField);
+mergedStructure = orderfields(mergedStructure,minimumFields);
 mergedStructure(sum(atomNums)).(minimumFields{1}) = [];
 
 for i = 2:numStruc
@@ -27,7 +28,7 @@ for i = 2:numStruc
     tmpStructure = rmfield(varargin{i},tmpDiffField);
     startindex = sum( atomNums(1:i-1) )+1;
     endindex = sum( atomNums(1:i) );
-    mergedStructure(startindex : endindex) = tmpStructure;
+    mergedStructure(startindex : endindex) = orderfields(tmpStructure,minimumFields);
 end
 mergedStructure = assignAtomno(mergedStructure);
 mergedStructure = assignInternalResno(mergedStructure);
