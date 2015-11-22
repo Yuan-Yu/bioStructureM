@@ -7,6 +7,9 @@ record:record
 chain:chain
 c.:chain
 resname:resname
+iResi:internalResno
+internalResno:internalResno
+internalResi:internalResno
 resn:resname
 restype:reaname
 atomicnumber:atomnum
