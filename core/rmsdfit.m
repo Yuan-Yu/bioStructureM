@@ -26,7 +26,8 @@ end
  t1 = fromXYZ-repmat(m1,ln1,1);
   t2 = toXYZ-repmat(m2,ln2,1);
   [u,s,w] = svd(t2'*t1);
-  R = w*[1 0 0 ; 0 1 0; 0 0 1]*u';
+ R = w*[1 0 0;0 1 0;0 0 det(u*w')]*u';
+ % R = w*[1 0 0 ; 0 1 0; 0 0 1]*u';
   
   if (abs(norm(m2))<1.0e-07)
   T=-m1*R  ;%in the case, the ref is already centered in (0,0,0)
