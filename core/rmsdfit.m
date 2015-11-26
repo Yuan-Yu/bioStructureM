@@ -1,19 +1,16 @@
-function [R,T,eRMSD,oRMSD,fromXYZ1,m1] = rmsdfit(toXYZ,fromXYZ,ca1,ca2,filename1,filename2,varargin)
-if length(varargin)==2
-    o=char(varargin(1));
-    c=char(varargin(2));
-else
-    o=char.empty(1,0);
-    c=char.empty(1,0);
-end
-%function [R,T,eRMSD] = kabsch(toXYZ:reference:t2,fromXYZ:current:t1)
-% find R and T that best maps
-% also find:
-% eRMSD = std(R*fromXYZ + T - toXYZ)
-% which will rotate (R: 3x3 matrix) and translate (T: 3 x 1 vector)
-% coordinates: fromXYZ (N x 3 matrix) to toXYZ (N x 3 matrix) and returns root-mean-squared error (eRMSD)
-% ||R*fromXYZ + T - toXYZ||^2
-
+function [R,T,eRMSD,oRMSD,newXYZ] = rmsdfit(toXYZ,fromXYZ)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Calculating the rotation,translation matrix and RMSD between to structures. 
+% input:
+%   toXYZ: the target coordinates
+%   fromXYZ: the coordinates that will be moved.
+% return
+%   R: the rotation matrix
+%   T: the translation matrix
+%   eRMSD: RMSD after fromXYZ moved
+%   oRMSD: RMSD before fromXYZ moved
+%   newXYZ: the coordinates after fromXYZ is moved.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   ln1 = size(fromXYZ,1);
   ln2 = size(toXYZ,1);
 
@@ -23,18 +20,19 @@ end
 
   m1 = mean(fromXYZ,1);
   m2 = mean(toXYZ,1);
- t1 = fromXYZ-repmat(m1,ln1,1);
+  t1 = fromXYZ-repmat(m1,ln1,1);
   t2 = toXYZ-repmat(m2,ln2,1);
   [u,s,w] = svd(t2'*t1);
- R = w*[1 0 0;0 1 0;0 0 det(u*w')]*u';
- % R = w*[1 0 0 ; 0 1 0; 0 0 1]*u';
+  % [1 0 0;0 1 0;0 0 det(u*w')] to prevent more than one solution if the
+  % all point are on the same plane.
+  R = w*[1 0 0;0 1 0;0 0 det(u*w')]*u';
   
   if (abs(norm(m2))<1.0e-07)
   T=-m1*R  ;%in the case, the ref is already centered in (0,0,0)
   else
   T = m2 - m1*R;
   end
-  fromXYZ1=fromXYZ*R + repmat(T,ln2,1);
+  newXYZ=fromXYZ*R + repmat(T,ln2,1);
   oRMSD = sqrt(sum(sum((toXYZ - fromXYZ).^2))/(ln2));
   eRMSD = sqrt(sum(sum((toXYZ - fromXYZ*R - repmat(T,ln2,1)).^2))/(ln2));
 
