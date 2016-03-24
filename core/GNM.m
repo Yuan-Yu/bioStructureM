@@ -5,7 +5,7 @@ function [pdb]=GNM(pdb,mode,cutOff)
 %   mode is a number the meaning is how many mode do you want.
 %   cutOff: if the distance of two atom is less than cutOff,the two atom
 %       is contact to each other.
-%   
+%
 % return:
 %   pdb is the structure that contain GNM attribute.(ex pdb(indexOfAtom).GNM or pdb(indexOfAtom).GNMValue)
 %   the format is like
@@ -22,7 +22,7 @@ contactMatrix=getContactMatrix(pdb,cutOff);
 S=diag(S);
 
 if S(1)>10^(-9)
-    error('Useful_func:eigError','warning: the fist eigenvalue is not zero.');
+    error('Useful_func:eigError','warning: the first eigenvalue is not zero.');
 end
 if S(2)<10^(-9)
 	error('Useful_func:eigError','warning: There are more than one zero eigenvalue.')
