@@ -54,7 +54,7 @@ for lineIndex=1:lenOfLineList
     if(lenOfline>=66)
         resno=strtrim(line(23:26));
         Altloc=line(17:17);
-        if  ~isempty(regexpi(Altloc,checkAlternate,'once'))
+%         if  ~isempty(regexpi(Altloc,checkAlternate,'once'))
             numOfRes=numOfRes+1;
             ca(numOfRes).record    =   strtrim(line(1:6));
             ca(numOfRes).atomno    =   sscanf(line(7:12),'%i');
@@ -94,7 +94,7 @@ for lineIndex=1:lenOfLineList
             end
             ca(numOfRes).internalResno = currentInternalResno;
             %%%
-        end   
+%         end   
         %%%%%% Stop when 'END' is encountered and stop when the first model in NMR file was read%%%%%%%%%%%%
     elseif(~isempty(regexp(line,'END$','once'))||(~isempty(regexp(line,'ENDMDL$','once'))&&~isequal(pdbType,'NMR')))
             break;

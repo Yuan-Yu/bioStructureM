@@ -1,12 +1,13 @@
-function [structure]=readPDB(pdbName,checkMissing,pdbType,isAssignMass)
+function [structure]=readPDB(pdbName,checkMissing,pdbType,isAssignMass,alternates)
 %%%%%%%%%%%%%%%% need cafrompdb,getAtomByAtomName,getBondLengths%%%%%%%%%%%%%%%%%%
 % input:
 %   pdbName: The name of the pdb file
 %   checkMissing: The value of this is 0 or 1. Setting 0 meams that do not check missing residues.
 %   pdbType: 'X-ray' or 'NMR'. (Default is X-ray).
 %   isAssignMass :This option can be 0 or 1. Default 1 mean assinging mass.
+%   alternates: a cell contains allowed alternate strings
 % return:
-%   structure is a structure array. 
+%   structure is a structure array.
 %		The structure contain attribute below
 %                                 resname
 %                                 atmname
@@ -29,28 +30,40 @@ if ~exist('checkMissing','var')
     checkMissing=0;
 end
 if ~exist('isAssignMass','var')
-    isAssignMass=1;
+    isAssignMass=0;
+end
+if ~exist('alternates','var')
+    alternates = {' ','A'};
 end
 try
     structure=atomfrompdb(pdbName,pdbType);
-    if ~iscell(structure) && isAssignMass
+    if ~iscell(structure)
         structure = setElementSymbol(structure);
-        structure = assignMass(structure);
-    elseif isAssignMass
+        alternate = {structure.alternate}; %%% select alternate coord
+        structure = getAtomByAlternate(structure,alternates);
+        if isAssignMass
+            structure = assignMass(structure);
+        end
+    else
         for i =1:length(structure)
-            structure{i}=setElementSymbol(structure{i});
-            structure{i}=assignMass(structure{i});
+            structure{i} = getAtomByAlternate(structure{i},alternates); %%% select alternate coord
+            structure{i} = setElementSymbol(structure{i});
+        end
+        if isAssignMass
+            for i =1:length(structure)
+                structure{i} = assignMass(structure{i});
+            end
         end
     end
 catch e
     if length(strtrim(pdbName))==4
         structure=atomfromPDBID(pdbName,pdbType);
-    else 
+    else
         rethrow(e);
     end
 end
 
-%% %%%%%% check missing residues %%%%%%%%% 
+%% %%%%%% check missing residues %%%%%%%%%
 if checkMissing
     if ~iscell(structure)
         chains=separatePDBByChain(structure);
@@ -91,4 +104,3 @@ if checkMissing
         error('Useful_func:missResiduesError',sprintf(['The ' pdbName ' have some missing residues:\n' ermsg]));
     end
 end
-    
