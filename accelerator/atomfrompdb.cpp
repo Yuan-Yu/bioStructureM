@@ -129,13 +129,14 @@ vector<vector<Atom> > parse(ifstream &PDBFile,bool isNMR){
     Atoms.reserve(512);
     char lastResno[5]="-100";
     char lastiCode[2] = "!";
+    char lastsegment[5]="~!~!";
     int currentInternalResno =0;
     bool isUseENDMDL = false,isEnd = false; // prevet from geting mode number+1
     while(PDBFile.getline(line,maxLengthLine)){
         if(strncmp(line,"ATOM",4)==0 || strncmp(line,"HETATM",6)==0 ){
             Atom currentAtom;
             parseATOM(line,currentAtom,strAtomno,strCoord,strBval,strOccupancy);
-            if(strncmp(currentAtom.resno,lastResno,4) || strncmp(currentAtom.iCode,lastiCode,1)){
+            if(strncmp(currentAtom.resno,lastResno,4) || strncmp(currentAtom.iCode,lastiCode,1) || strncmp(currentAtom.segment,lastsegment,4)){
                 currentInternalResno += 1;
                 addNullStrncpy(lastResno,currentAtom.resno,4);
                 addNullStrncpy(lastiCode,currentAtom.iCode,1);
@@ -213,7 +214,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]){
     }
     bool isNMR = false;
     if (nrhs>1 && mxGetScalar(prhs[1])>0 )isNMR = true;
-    
+
     size_t fileNameLength = mxGetN(prhs[0]) * sizeof(mxChar)+1;
     char* fileName;
     fileName = (char*) mxMalloc(fileNameLength);

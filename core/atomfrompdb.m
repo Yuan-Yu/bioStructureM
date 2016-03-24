@@ -21,6 +21,7 @@ function [ca] =atomfrompdb(pdbFileName,pdbType,setAlternate)
 %                                 elementSymbol
 %                                 alternate
 %                                 charge
+%                                 internalResno
 %   if pdbType is NMR,a cellarry of structure will be return.
 %%%%%%%%%%%%%%%%% need %%%%%%%%%%%%%%%
 if ~exist('pdbType', 'var')
@@ -45,6 +46,7 @@ ca(lenOfLineList).resname =[];
 currentInternalResno=0;
 lastResno =-100000;
 lastiCode = '!';
+lastSegment='*!!!';
 for lineIndex=1:lenOfLineList
     %line=deblank(lineList{lineIndex});
     line=lineList{lineIndex};
@@ -65,14 +67,6 @@ for lineIndex=1:lenOfLineList
             ca(numOfRes).subunit   =   line(22);
             ca(numOfRes).occupancy =   sscanf(line(55:60),'%f');
             ca(numOfRes).alternate =   Altloc;
-            %%% Build interal residue number.  new attribute testing
-            if ~strcmp(resno,lastResno) || lastiCode ~= line(27)
-                lastResno = resno;
-                lastiCode = line(27);
-                currentInternalResno = currentInternalResno + 1;
-            end
-            ca(numOfRes).internalResno = currentInternalResno;
-            %%%
             if lenOfline>=80
                 ca(numOfRes).charge    =   strtrim(line(79:80));
                 ca(numOfRes).segment   =   strtrim(line(73:76));
@@ -90,6 +84,16 @@ for lineIndex=1:lenOfLineList
                 ca(numOfRes).segment   =   '';
                 ca(numOfRes).elementSymbol='';
             end
+            
+            %%% Build interal residue number.  new attribute testing
+            if ~strcmp(resno,lastResno) || lastiCode ~= line(27) ||  ~strcmp(lastSegment,ca(numOfRes).segment)
+                lastResno = resno;
+                lastiCode = line(27);
+                lastSegment = ca(numOfRes).segment;
+                currentInternalResno = currentInternalResno + 1;
+            end
+            ca(numOfRes).internalResno = currentInternalResno;
+            %%%
         end   
         %%%%%% Stop when 'END' is encountered and stop when the first model in NMR file was read%%%%%%%%%%%%
     elseif(~isempty(regexp(line,'END$','once'))||(~isempty(regexp(line,'ENDMDL$','once'))&&~isequal(pdbType,'NMR')))
@@ -100,6 +104,7 @@ for lineIndex=1:lenOfLineList
         currentInternalResno=0;
         lastResno =-100000;
         lastiCode = '!';
+        lastSegment='*!!!';
         %
         ca(numOfRes+1:end)=[];
         numOfRes=0;
