@@ -28,7 +28,7 @@ struct Atom {
 void readFile(const char* filePath,ifstream &PDBFile){
     PDBFile.open(filePath,ifstream::in);
     if(!PDBFile.is_open()){
-        mexErrMsgIdAndTxt( "AtomfromPDB:unableToOpen.","%s not found.",filePath);
+        mexErrMsgIdAndTxt( "AtomfromPDB:unableToOpen","%s not found.",filePath);
     }
 }
 
