@@ -1,17 +1,31 @@
-function [ca1,eRMSD,R,T]=superimpose(ca1,ca2)
+function [moved,eRMSD,R,T]=superimpose(moved,target)
 %%%%%%%%  need rmsdfit.m,getCoordfromca %%%%%%%%%
-%the  ca1 and ca2 are the object gotten from cafrompdb 
-%the numbers of residus of ca1 and ca2 must be same
-% superimpose ca1 to ca2 
+%the  moved and terget are the object gotten from readPDB or a n by 3 array
+%   where the n is number of atoms.The numbers of atoms of moved and terget must 
+%   be same.Superimpose moved to terget 
+% input:
+%   moved: a structure array gotten from readPDB or n by 3 array
+%   terget: a structure array gotten from readPDB or n by 3 array
 %return 
-%       ca1 is be superimposed
+%       moved is be superimposed (if input is structure, output is structure too.)
 %		eRMSD is the root-mean-square deviation of the two ca.
 %       R: rotation matrix
 %       T: translation matrix
 %%%%%%%%  need rmsdfit.m,getCoordfromca %%%%%%%%%
-    COORD1=getCoordfromca(ca1);
-    COORD2=getCoordfromca(ca2);
-    [R,T,eRMSD,oRMSD,newCOORD1]=rmsdfit(COORD2,COORD1);
-    for i=1:length(ca1)
-        ca1(i).coord(:)=newCOORD1(i,:);
+    if isstruct(moved) && isstruct(target)
+        COORD1=getCoordfromca(moved);
+        COORD2=getCoordfromca(target);
+        [R,T,eRMSD,~,newCOORD1]=rmsdfit(COORD2,COORD1);
+        moved = setCoord(moved,true(length(move),1),newCOORD1);
+    elseif ismatrix(target) && ismatrix(moved)
+        [R,T,eRMSD,~,newCOORD1]=rmsdfit(target,moved);
+        moved = newCOORD1;
+    elseif isstruct(moved) && ismatrix(target)
+        COORD1=getCoordfromca(moved);
+        [R,T,eRMSD,~,newCOORD1]=rmsdfit(target,COORD1);
+        moved = setCoord(moved,true(length(move),1),newCOORD1);
+    elseif isstruct(target) && ismatrix(moved)
+        COORD2=getCoordfromca(target);
+        [R,T,eRMSD,~,newCOORD1]=rmsdfit(COORD2,moved);
+        moved = newCOORD1;
     end

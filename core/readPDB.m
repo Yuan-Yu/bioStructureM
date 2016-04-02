@@ -3,7 +3,7 @@ function [structure]=readPDB(pdbName,checkMissing,pdbType,isAssignMass,alternate
 % input:
 %   pdbName: The name of the pdb file
 %   checkMissing: The value of this is 0 or 1. Setting 0 meams that do not check missing residues.
-%   pdbType: 'X-ray' or 'NMR'. (Default is X-ray).
+%   pdbType:  0='X-ray' 1='NMR'. (Default is 0).
 %   isAssignMass :This option can be 0 or 1. Default 1 mean assinging mass.
 %   alternates: a cell contains allowed alternate strings
 % return:
@@ -24,7 +24,7 @@ function [structure]=readPDB(pdbName,checkMissing,pdbType,isAssignMass,alternate
 %                                 charge
 %%%%%%%%%%%%%%%% need cafrompdb,getAtomByAtomName,getBondLengths%%%%%%%%%%%%%%%%%%
 if ~exist('pdbType','var')
-    pdbType='X-ray';
+    pdbType=0;
 end
 if ~exist('checkMissing','var')
     checkMissing=0;
@@ -39,7 +39,6 @@ try
     structure=atomfrompdb(pdbName,pdbType);
     if ~iscell(structure)
         structure = setElementSymbol(structure);
-        alternate = {structure.alternate}; %%% select alternate coord
         structure = getAtomByAlternate(structure,alternates);
         if isAssignMass
             structure = assignMass(structure);

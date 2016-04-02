@@ -1,8 +1,8 @@
-function [ca] =atomfrompdb(pdbFileName,pdbType,setAlternate)
+function [ca] =atomfrompdb(pdbFileName,pdbType)
 %%%%%%%%%%%%%%%%% need %%%%%%%%%%%%%%
 % input:
 %   pdbFileName: The name of the pdb file
-%   pdbType: 'X-ray' or 'NMR'. (Default is X-ray).
+%   pdbType:  0='X-ray' 1='NMR'. (Default is 0).
 %   setAlternate: if atom is alternate which coordinate will be used.
 %                (default is A)
 % return:
@@ -25,12 +25,8 @@ function [ca] =atomfrompdb(pdbFileName,pdbType,setAlternate)
 %   if pdbType is NMR,a cellarry of structure will be return.
 %%%%%%%%%%%%%%%%% need %%%%%%%%%%%%%%%
 if ~exist('pdbType', 'var')
-    pdbType='X-RAY';
+    pdbType=0;
 end
-if ~exist('setAlternate','var')
-    setAlternate='A';
-end
-checkAlternate=['\s|' setAlternate];
 numOfRes=0;
 
 numOfMode=0;
@@ -96,7 +92,7 @@ for lineIndex=1:lenOfLineList
             %%%
 %         end   
         %%%%%% Stop when 'END' is encountered and stop when the first model in NMR file was read%%%%%%%%%%%%
-    elseif(~isempty(regexp(line,'END$','once'))||(~isempty(regexp(line,'ENDMDL$','once'))&&~isequal(pdbType,'NMR')))
+    elseif(~isempty(regexp(line,'END$','once'))||(~isempty(regexp(line,'ENDMDL$','once'))&& ~pdbType))
             break;
         %%%%%% read all mode of NMR %%%%%%%%%%%%           
     elseif ~isempty(regexp(line,'ENDMDL$','once'))
@@ -114,9 +110,9 @@ for lineIndex=1:lenOfLineList
     end
 end
 
-if isequal(pdbType,'NMR')&& ~isempty(mode)
+if pdbType&& ~isempty(mode)
     ca=mode;
-elseif isequal(pdbType,'NMR')
+elseif pdbType
     display('It seems like this pdb is not NMR structure!')
 else
     ca(numOfRes+1:end)=[];
