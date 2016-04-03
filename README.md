@@ -7,11 +7,22 @@ a basic matlab package  for analysis protein structure
 - [Get other attributes of the pdb](#get-other-attributes-of-the-pdb)
 - [Get center of geometry](#get-center-of-geometry)
 - [Get center of mass](#get-center-of-mass)
-- [Atom selection (as)](#Atom-selection-as)
-    - [name](#as-name)
+- [Atom selection (as)](#atom-selection-as)
+    - [Simple Selection](#simple-selection)  
+        - [name](#as-name) 
+        - [resi resid residue](#as-resi)
+        - [record](#as-record)
+        - [insertion](#as-insertion)
+        - [bval beta](#as-bval)
+        - [resn restype](#as-resn)
+        - [chain c](#as-chain)
+        - [segment segid](#as-segment)
+        - [atomnum atomicnumber](#as-atomnum)
+        - [x y z](#as-xyz)  
+
 - - - - -
 ## Quick Start
-### import path
+### Import path
 Import **bioStructureM** path to Matlab  
 
     addpath('your_bioStructureM_root/core');  
@@ -136,28 +147,31 @@ Select protein  or water
     protein  = as('protein',pdbStruct);
     water = as('water',pdbStruct);  
 **The return of "as" is a structure array have same fields as original structure**
-#### simple selection  
-- **name atomname**  {selected-atom-names}<p name=as-name></p>
-Using space as delimiter to separate the different atom names.
+#### Simple Selection  
+- <a name=as-name></a> **name atomname** {selected-atom-names}  
+Using space as delimiter to separate the different atom names.  
+
         as('name CA C O N',pdbStruct)
         as('atomname CA C O N',pdbStruct)
 "name" and "atomname" support simple regular expression. For example "name H*", this
- command will select all the atoms which the names is H1,H2,HD1... etc.
-        as('name H*',pdbStruct)
+ command will select all the atoms which the names is H1,H2,HD1... etc.     
+ 
+       as('name H*',pdbStruct)
 Because of the support of regular expression, the command to select the "H\*" atoms
  should be "H\\\*".
-- **resi resid residue**  {selected-resids}
+- **resi resid residue**  {selected-resids}<a name=as-resi></a>  
 select by residue ids  
+
         as('resi 73 80',pdbStruct)
         as('resid 73 80',pdbStruct)
-select sequence residue ids
+select sequence residue ids  
+
         as()
-- **record** {ATOM|HETATM}
-- **insertion** {single-character}
-- **bval beta**
-- **resn restype**
-- **chain c.**
-- **segment segid**
-- **atomnum atomicnumber**
-- **x y z**
-- **insertion**
+- **record** {ATOM|HETATM}<a name=as-record></a>
+- **insertion** {single-character}<a name=as-insertion></a>
+- **bval beta**<a name=as-bval></a> 
+- **resn restype**<a name=as-resn></a> 
+- **chain c.**<a name=as-chain></a>
+- **segment segid**<a name=as-segment></a> 
+- **atomnum atomicnumber**<a name=as-atomnum></a> 
+- **x y z**<a name=as-xyz></a> 
