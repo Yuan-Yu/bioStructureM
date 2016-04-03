@@ -1,13 +1,23 @@
 # bioStructureM
 a basic matlab package  for analysis protein structure
+## Quick Start  
+- [import path](#import-path)
+- [Read local pdb file](#one)
+- [Get coordinate data](#get-coordinate-data)
+- [Get other attributes of the pdb](#get-other-attributes-of-the-pdb)
+- [Get center of geometry](#get-center-of-geometry)
+- [Get center of mass](#get-center-of-mass)
+- [Atom selection (as)](#Atom-selection-as)
+    - [name](#as-name)
 - - - - -
 ## Quick Start
+### import path
 Import **bioStructureM** path to Matlab  
 
     addpath('your_bioStructureM_root/core');  
     addpath('your_bioStructureM_root/atomselector');  
 
-### Read local pdb file (ex. [1BFG](http://www.rcsb.org/pdb/explore/explore.do?structureId=1BFG)).
+### Read local pdb file (ex. [1BFG](http://files.rcsb.org/header/1BFG.pdb)).<p name=one>
 The pdbStruct is a [MATLAB structure array](http://www.mathworks.com/help/matlab/ref/struct.html) contain several fields :
 <table>
     <tr>
@@ -63,7 +73,7 @@ The pdbStruct is a [MATLAB structure array](http://www.mathworks.com/help/matlab
     <tr>
         <td>record</td>
         <td>char</td>
-        <td>Record name can be either **ATOM** or **HETATM**</td>
+        <td>Record name can be either ATOM or HETATM</td>
     </tr>
     <tr>
         <td>resname</td>
@@ -99,7 +109,7 @@ The return of `getCoord` is a n by 3 array. Where the "n" is number of atoms of 
 For the ***double*** format data
 
     bfactor = [pdbStruct.bval];  % bfactor is an double array.
-For the ***string*** format data  
+For the ***characters*** format data  
 
     atomName = {pdbStruct.atomname}; % atom Name is a cell array.  
 
@@ -113,4 +123,41 @@ Before using `getCenterOfMass`, assigning mass to each atom is needed.
     pdbStruct = assignMass(pdbStruct);
     mcenter = getCenterOfMass(pdbStruct);
 
-### Atom selection
+### Atom selection (as) <p name=Atom-selection-as></p>
+Use VMD-like syntax to select specific atoms.
+Select by atom name.  
+
+    CaStruct = as('name CA',pdbStruct);
+Select by residues id  
+
+    T73 = as('resi 73',pdbStruct);
+Select protein  or water  
+
+    protein  = as('protein',pdbStruct);
+    water = as('water',pdbStruct);  
+**The return of "as" is a structure array have same fields as original structure**
+#### simple selection  
+- **name atomname**  {selected-atom-names}<p name=as-name></p>
+Using space as delimiter to separate the different atom names.
+        as('name CA C O N',pdbStruct)
+        as('atomname CA C O N',pdbStruct)
+"name" and "atomname" support simple regular expression. For example "name H*", this
+ command will select all the atoms which the names is H1,H2,HD1... etc.
+        as('name H*',pdbStruct)
+Because of the support of regular expression, the command to select the "H\*" atoms
+ should be "H\\\*".
+- **resi resid residue**  {selected-resids}
+select by residue ids  
+        as('resi 73 80',pdbStruct)
+        as('resid 73 80',pdbStruct)
+select sequence residue ids
+        as()
+- **record** {ATOM|HETATM}
+- **insertion** {single-character}
+- **bval beta**
+- **resn restype**
+- **chain c.**
+- **segment segid**
+- **atomnum atomicnumber**
+- **x y z**
+- **insertion**
