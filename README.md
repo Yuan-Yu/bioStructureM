@@ -147,8 +147,8 @@ Select protein  or water
     protein  = as('protein',pdbStruct);
     water = as('water',pdbStruct);  
 **The return of "as" is a structure array have same fields as original structure**
-#### Simple Selection  
-- **name atomname** {selected-atom-names}<a name=as-name></a>
+#### Simple Selection<a name=as-name></a>  
+- **name atomname** {selected-atom-names}
 Using space as delimiter to separate the different atom names.  
 
         as('name CA C O N',pdbStruct)
@@ -158,8 +158,8 @@ Using space as delimiter to separate the different atom names.
 
        as('name H*',pdbStruct)
 Because of the support of regular expression, the command to select the "H\*" atoms
- should be "H\\\*".
-- **resi resid residue**  {selected-resids}<a name=as-resi></a>  
+ should be "H\\\*".<a name=as-resi></a>
+- **resi resid residue**  {selected-resids}  
 select by residue ids  
 
         as('resi 73 80',pdbStruct)
@@ -169,42 +169,43 @@ select sequence residue ids: start:step:end or start:end
         as('resi 19:90',pdbStruct)
         as('resi 19:2:90',pdbStruct)
         as('resi 19:31 40:60 144',pdbStruct) 
-
-- **record** {ATOM|HETATM}<a name=as-record></a>
+<a name=as-record></a>
+- **record** {ATOM|HETATM}
 
         as('record HETATM',pdbStruct)
-- **insertion** {single-character}<a name=as-insertion></a>
+<a name=as-insertion></a>
+- **insertion** {single-character}  
 select by insertion code (iCode) of residues  
 
         as('insertion A',pdbStruct)
         as('insertion A \s',pdbStruct)
-"\\s" is used to select the atoms that the insertion code is empty.  
-- **bval beta** {<|<=|>|>=|=}<a name=as-bval></a>
+"\\s" is used to select the atoms that the insertion code is empty.<a name=as-bval></a>  
+- **bval beta** {<|<=|>|>=|=}  
 select by specific Temperature factors  
 
         as('bval >40',pdbStruct)
         as('bval =40',pdbStruct)  
 Note: There should have extra space between "bval" and "condition". ex. "bal>40" is
  a wrong represontation.  
-
-- **resn restype** {residue-names}<a name=as-resn></a>  
+<a name=as-resn></a>
+- **resn restype** {residue-names}  
 
         as('resn ALA',pdbStruct)
         as('resn ALA TYR',pdbStruct)
-
-- **chain c.** {one-character-chain-ID}<a name=as-chain></a>  
+<a name=as-chain></a>
+- **chain c.** {one-character-chain-ID}  
 
         as('c. A',pdbStruct)
         as('c. A B',pdbStruct)
         as('c. \s',pdbStruct)
-"\\s" is used to select the atoms that the chain ID is empty.  
-- **segment segid**<a name=as-segment></a>  
+"\\s" is used to select the atoms that the chain ID is empty.<a name=as-segment></a>  
+- **segment segid**  
 
         as('segid PROA',pdbStruct)
         as('segment PROA WAT',pdbStruct)
-
-- **atomnum atomicnumber**<a name=as-atomnum></a>  
+<a name=as-atomnum></a>
+- **atomnum atomicnumber**    
 similar as [resid](#as-resi)  
-
-- **x y z**<a name=as-xyz></a>
+<a name=as-xyz></a>
+- **x y z**   
 similar as [bval](#as-bval)  
