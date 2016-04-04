@@ -1,7 +1,7 @@
 # bioStructureM
 a basic matlab package  for analysis protein structure
 ## Quick Start  
-- [import path](#import-path)
+- [Import path](#import-path)
 - [Read local pdb file](#one)
 - [Get coordinate data](#get-coordinate-data)
 - [Get other attributes of the pdb](#get-other-attributes-of-the-pdb)
@@ -9,7 +9,7 @@ a basic matlab package  for analysis protein structure
 - [Get center of mass](#get-center-of-mass)
 - [Atom selection (as)](#atom-selection-as)
     - [Simple Selection](#simple-selection)  
-        - [name](#as-name) 
+        - [name](#as-name)
         - [resi resid residue](#as-resi)
         - [record](#as-record)
         - [insertion](#as-insertion)
@@ -148,14 +148,14 @@ Select protein  or water
     water = as('water',pdbStruct);  
 **The return of "as" is a structure array have same fields as original structure**
 #### Simple Selection  
-- <a name=as-name></a> **name atomname** {selected-atom-names}  
+- **name atomname** {selected-atom-names}<a name=as-name></a>
 Using space as delimiter to separate the different atom names.  
 
         as('name CA C O N',pdbStruct)
         as('atomname CA C O N',pdbStruct)
 "name" and "atomname" support simple regular expression. For example "name H*", this
  command will select all the atoms which the names is H1,H2,HD1... etc.     
- 
+
        as('name H*',pdbStruct)
 Because of the support of regular expression, the command to select the "H\*" atoms
  should be "H\\\*".
@@ -164,14 +164,47 @@ select by residue ids
 
         as('resi 73 80',pdbStruct)
         as('resid 73 80',pdbStruct)
-select sequence residue ids  
+select sequence residue ids: start:step:end or start:end  
 
-        as()
+        as('resi 19:90',pdbStruct)
+        as('resi 19:2:90',pdbStruct)
+        as('resi 19:31 40:60 144',pdbStruct) 
+
 - **record** {ATOM|HETATM}<a name=as-record></a>
+
+        as('record HETATM',pdbStruct)
 - **insertion** {single-character}<a name=as-insertion></a>
-- **bval beta**<a name=as-bval></a> 
-- **resn restype**<a name=as-resn></a> 
-- **chain c.**<a name=as-chain></a>
-- **segment segid**<a name=as-segment></a> 
-- **atomnum atomicnumber**<a name=as-atomnum></a> 
-- **x y z**<a name=as-xyz></a> 
+select by insertion code (iCode) of residues  
+
+        as('insertion A',pdbStruct)
+        as('insertion A \s',pdbStruct)
+"\\s" is used to select the atoms that the insertion code is empty.  
+- **bval beta** {<|<=|>|>=|=}<a name=as-bval></a>
+select by specific Temperature factors  
+
+        as('bval >40',pdbStruct)
+        as('bval =40',pdbStruct)  
+Note: There should have extra space between "bval" and "condition". ex. "bal>40" is
+ a wrong represontation.  
+
+- **resn restype** {residue-names}<a name=as-resn></a>  
+
+        as('resn ALA',pdbStruct)
+        as('resn ALA TYR',pdbStruct)
+
+- **chain c.** {one-character-chain-ID}<a name=as-chain></a>  
+
+        as('c. A',pdbStruct)
+        as('c. A B',pdbStruct)
+        as('c. \s',pdbStruct)
+"\\s" is used to select the atoms that the chain ID is empty.  
+- **segment segid**<a name=as-segment></a>  
+
+        as('segid PROA',pdbStruct)
+        as('segment PROA WAT',pdbStruct)
+
+- **atomnum atomicnumber**<a name=as-atomnum></a>  
+similar as [resid](#as-resi)  
+
+- **x y z**<a name=as-xyz></a>
+similar as [bval](#as-bval)  

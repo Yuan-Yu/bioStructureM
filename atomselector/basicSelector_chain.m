@@ -6,5 +6,5 @@ function [logicIndexArray]=basicSelector_chain(PDBStructure,selectionCell)
 % return:
 %   logicIndexArray
 %%%%%%%%%%%%%% need %%%%%%%%%%%%%
-
+selectionCell = regexprep(selectionCell,'\\s',' ');
 logicIndexArray=ismember({PDBStructure.subunit},selectionCell);
