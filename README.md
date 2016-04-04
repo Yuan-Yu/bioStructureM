@@ -15,11 +15,19 @@ a basic matlab package  for analysis protein structure
         - [insertion](#as-insertion)
         - [bval beta](#as-bval)
         - [resn restype](#as-resn)
-        - [chain c](#as-chain)
+        - [chain c.](#as-chain)
         - [segment segid](#as-segment)
         - [atomnum atomicnumber](#as-atomnum)
         - [x y z](#as-xyz)  
-
+    - [Single keywords](#single-keywords)
+    - [Selection operator](#selection-operator)
+        -[and &](#as-and)
+        -[or |](#as-or)
+        -[not](#as-not)
+        -[within {distance} of ](#as-within)
+        -[byres](#as-byres)
+        -[bychain](#as-bychain)
+        -[()](#as-br)
 - - - - -
 ## Quick Start
 ### Import path
@@ -157,7 +165,7 @@ Using space as delimiter to separate the different atom names.
  command will select all the atoms which the names is H1,H2,HD1... etc.     
 
        as('name H*',pdbStruct)
-Because of the support of regular expression, the command to select the "H\*" atoms
+Because of supporting regular expression, the command to select the "H\*" atoms
  should be "H\\\*".<a name=as-resi></a>
 - **resi resid residue**  {selected-resids}  
 select by residue ids  
@@ -168,7 +176,7 @@ select sequence residue ids: start:step:end or start:end
 
         as('resi 19:90',pdbStruct)
         as('resi 19:2:90',pdbStruct)
-        as('resi 19:31 40:60 144',pdbStruct) 
+        as('resi 19:31 40:60 144',pdbStruct)
 <a name=as-record></a>
 - **record** {ATOM|HETATM}
 
@@ -180,7 +188,7 @@ select by insertion code (iCode) of residues
         as('insertion A',pdbStruct)
         as('insertion A \s',pdbStruct)
 "\\s" is used to select the atoms that the insertion code is empty.<a name=as-bval></a>  
-- **bval beta** {<|<=|>|>=|=}  
+- **bval beta** {<|<=|>|>=|=}{value}  
 select by specific Temperature factors  
 
         as('bval >40',pdbStruct)
@@ -199,13 +207,68 @@ Note: There should have extra space between "bval" and "condition". ex. "bal>40"
         as('c. A B',pdbStruct)
         as('c. \s',pdbStruct)
 "\\s" is used to select the atoms that the chain ID is empty.<a name=as-segment></a>  
-- **segment segid**  
+- **segment segid** {segids}  
 
         as('segid PROA',pdbStruct)
         as('segment PROA WAT',pdbStruct)
 <a name=as-atomnum></a>
-- **atomnum atomicnumber**    
+- **atomnum atomicnumber** {atom-indexes}   
 similar as [resid](#as-resi)  
 <a name=as-xyz></a>
-- **x y z**   
+- **x y z** {<|<=|>|>=|=}{value}
 similar as [bval](#as-bval)  
+#### Single keywords  
+        as('protein',pdbStruct)
+        as('all',pdbStruct)
+**keywords**:  
+- all  
+- protein  
+- backbone
+- water wat  
+- nucleic
+- het. HETATM  
+
+#### Selection Operator  
+        as('protein or water',pdbStruct)
+        as('(protein and c. A) or water',pdbStruct)
+<a name=as-and></a>
+- and &  
+Select the **intersection** of two selections  
+
+        as('resi 73 and name CA CB',pdbStruct)
+        as('resi 73 and name CA CB and bval >10',pdbStruct)
+<a name=as-or></a>
+- or |  
+Select the **union** of two selections  
+
+        as('protein or water',pdbStruct)
+
+<a name=as-not></a>
+- not   
+Select all atoms not in selection
+
+        as('not water',pdbStruct)
+<a name=as-within></a>
+- within {distance} of  
+
+        as('water within 4 of protein',pdbStruct)  
+Let's call water as sel1 and protein as sel2. The command would select any atoms
+in **sel1** which are wihin 4 **Angstroms**  of any atom in **sel2**.  
+
+<a name=as-br></a>
+- ()  
+Change the priority of selection command
+This command would select the O atoms of water only.
+        as('protein and name CA or water and name O',pdbStruct)
+After add () to the command, it can select CA atoms in protein and O atoms in water
+        as('(protein and name CA) or (water and name O)')  
+<a name=as-byres></a>
+- byres  
+extend selection to complete residues
+        as('byres (protein within 4 of resi 73)',pdbStruct)
+
+<a name=as-bychain></a>
+- bychain  
+extend selection to whole atoms in same chain.  
+
+        as('bychain resi 73',pdbStruct)  
