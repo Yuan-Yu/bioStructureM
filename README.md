@@ -21,13 +21,15 @@ a basic matlab package  for analysis protein structure
         - [x y z](#as-xyz)  
     - [Single keywords](#single-keywords)
     - [Selection operator](#selection-operator)
-        -[and &](#as-and)
-        -[or |](#as-or)
-        -[not](#as-not)
-        -[within {distance} of ](#as-within)
-        -[byres](#as-byres)
-        -[bychain](#as-bychain)
-        -[()](#as-br)
+        - [and &](#as-and)
+        - [or |](#as-or)
+        - [not](#as-not)
+        - [within {distance} of ](#as-within)
+        - [byres](#as-byres)
+        - [bychain](#as-bychain)
+        - [()](#as-br)  
+    - [Set attribute by selection](#set-attribute-by-selection)
+
 - - - - -
 ## Quick Start
 ### Import path
@@ -140,9 +142,9 @@ For the ***characters*** format data
 Before using `getCenterOfMass`, assigning mass to each atom is needed.  
 
     pdbStruct = assignMass(pdbStruct);
-    mcenter = getCenterOfMass(pdbStruct);
-
-### Atom selection (as) <p name=Atom-selection-as></p>
+    mcenter = getCenterOfMass(pdbStruct);  
+<p name=atom-selection-as></p>
+### Atom selection (as)  
 Use VMD-like syntax to select specific atoms.
 Select by atom name.  
 
@@ -215,11 +217,13 @@ Note: There should have extra space between "bval" and "condition". ex. "bal>40"
 - **atomnum atomicnumber** {atom-indexes}   
 similar as [resid](#as-resi)  
 <a name=as-xyz></a>
-- **x y z** {<|<=|>|>=|=}{value}
+- **x y z** {<|<=|>|>=|=}{value}  
 similar as [bval](#as-bval)  
+
 #### Single keywords  
         as('protein',pdbStruct)
-        as('all',pdbStruct)
+        as('all',pdbStruct)  
+
 **keywords**:  
 - all  
 - protein  
@@ -257,18 +261,33 @@ in **sel1** which are wihin 4 **Angstroms**  of any atom in **sel2**.
 
 <a name=as-br></a>
 - ()  
-Change the priority of selection command
-This command would select the O atoms of water only.
-        as('protein and name CA or water and name O',pdbStruct)
-After add () to the command, it can select CA atoms in protein and O atoms in water
+Change the priority of selection command.  
+This command would select the O atoms of water only.  
+
+        as('protein and name CA or water and name O',pdbStruct)  
+After add () to the command, it can select CA atoms in protein and O atoms in water  
+
         as('(protein and name CA) or (water and name O)')  
 <a name=as-byres></a>
 - byres  
-extend selection to complete residues
+Extend selection to complete residues  
+
         as('byres (protein within 4 of resi 73)',pdbStruct)
 
 <a name=as-bychain></a>
 - bychain  
-extend selection to whole atoms in same chain.  
+Extend selection to whole atoms in same chain.  
 
         as('bychain resi 73',pdbStruct)  
+
+### Set attribute by selection  
+This section show how to set values to specific field and atoms.  
+
+    asSetAttribute('protein',pdbStruct,'segment','PROA')
+Change the segment field of protein to "PROA".
+
+    asSetAttribute('all',pdbStruct,'bval',0)
+    newCABval = ones(1,144)*100
+    asSetAttribute('protein and CA',pdbStruct,'bval',newProteinBval)  
+Set CA atoms bfactor to 100 and set all others to zero.  
+**Note: The number of assigned values should be same as number of atoms or a sigle value.**
