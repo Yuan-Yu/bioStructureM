@@ -1,5 +1,5 @@
 # bioStructureM
-a basic matlab package  for analysis protein structure
+a basic matlab package with VMD-like selection snytax for analysis protein structure
 ## Quick Start  
 - [Import path](#import-path)
 - [Read local pdb file](#one)
@@ -145,7 +145,7 @@ Before using `getCenterOfMass`, assigning mass to each atom is needed.
     mcenter = getCenterOfMass(pdbStruct);  
 <p name=atom-selection-as></p>
 ### Atom selection (as)  
-Use VMD-like syntax to select specific atoms.
+Use VMD-like syntax to select specific atoms.  
 Select by atom name.  
 
     CaStruct = as('name CA',pdbStruct);
@@ -267,7 +267,7 @@ This command would select the O atoms of water only.
         as('protein and name CA or water and name O',pdbStruct)  
 After add () to the command, it can select CA atoms in protein and O atoms in water  
 
-        as('(protein and name CA) or (water and name O)')  
+        as('(protein and name CA) or (water and name O)',pdbStruct)  
 <a name=as-byres></a>
 - byres  
 Extend selection to complete residues  
