@@ -11,13 +11,13 @@
 #
 # Note : The default value of ISP and ICP is 2 and 3.
 #
-and:and:and:2:2:3
-or:or:or:2:2:3
+and:(?<=\W)and(?=\W):and:2:2:3
+or:(?<=\W)or(?=\W):or:2:2:3
 (:\(:(:1:1:6
 ):\):):1:5:5
-within:within{1}\s+.*?\s.*?of:within:2:3:3
+within:(?<=\W)within{1}\s+.*?\s.*?of(?=\W):within:2:3:3
 |:\|:or:2:2:3
 &:\&:and:2:2:3
-byres:byres:byres:1:4:3
-not:not:not:1:4:3
-bychain:bychain:bychain:1:4:3
+byres:(?<=\W)byres(?=\W):byres:1:4:3
+not:(?<=\W)not(?=\W):not:1:4:3
+bychain:(?<=\W)bychain(?=\W):bychain:1:4:3

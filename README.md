@@ -38,7 +38,7 @@ Import **bioStructureM** path to [Matlab](http://www.mathworks.com/products/matl
     addpath('your_bioStructureM_root/core');  
     addpath('your_bioStructureM_root/atomselector');  
 
-### Read local pdb file (ex. [1BFG](http://files.rcsb.org/view/1BGF.pdb)).<p name=one>
+### Read local pdb file (ex. [1BFG](http://files.rcsb.org/view/1BFG.pdb)).<p name=one>
 The pdbStruct is a [MATLAB structure array](http://www.mathworks.com/help/matlab/ref/struct.html) contain several fields :
 <table>
     <tr>
@@ -132,7 +132,7 @@ For the ***double*** format data
     bfactor = [pdbStruct.bval];  % bfactor is an double array.
 For the ***characters*** format data  
 
-    atomName = {pdbStruct.atomname}; % atom Name is a cell array.  
+    atomName = {pdbStruct.atmname}; % atom Name is a cell array.  
 
 ### Get center of geometry      
 
@@ -156,7 +156,7 @@ Select protein  or water
 
     protein  = as('protein',pdbStruct);
     water = as('water',pdbStruct);  
-**The return of "as" is a structure array have same fields as original structure**
+**The return of "as" is a structure array that has same fields as original structure**
 #### Simple Selection<a name=as-name></a>  
 - **name atomname** {selected-atom-names}
 Using space as delimiter to separate the different atom names.  
@@ -288,6 +288,6 @@ Change the segment field of protein to "PROA".
 
     asSetAttribute('all',pdbStruct,'bval',0)
     newCABval = ones(1,144)*100
-    asSetAttribute('protein and CA',pdbStruct,'bval',newProteinBval)  
+    asSetAttribute('protein and CA',pdbStruct,'bval',newCABval)  
 Set CA atoms bfactor to 100 and set all others to zero.  
 **Note: The number of assigned values should be same as number of atoms or a sigle value.**
