@@ -33,12 +33,12 @@ a basic matlab package with VMD-like selection snytax for analysis protein struc
 - - - - -
 ## Quick Start
 ### Import path
-Import **bioStructureM** path to Matlab  
+Import **bioStructureM** path to [Matlab](http://www.mathworks.com/products/matlab/)  
 
     addpath('your_bioStructureM_root/core');  
     addpath('your_bioStructureM_root/atomselector');  
 
-### Read local pdb file (ex. [1BFG](http://files.rcsb.org/header/1BFG.pdb)).<p name=one>
+### Read local pdb file (ex. [1BFG](http://files.rcsb.org/view/1BGF.pdb)).<p name=one>
 The pdbStruct is a [MATLAB structure array](http://www.mathworks.com/help/matlab/ref/struct.html) contain several fields :
 <table>
     <tr>
