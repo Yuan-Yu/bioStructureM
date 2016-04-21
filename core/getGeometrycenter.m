@@ -6,5 +6,5 @@ function [geometrycenter]=getGeometrycenter(pdbStructure)
 %   geometrycenter: the geometrycenter of the pdb
 %%%%%%%%%%%% need getCoord %%%%%%%%%%%%%%
 
-    geometrycenter=mean(getCoord(pdbStructure));
+    geometrycenter=mean(getCoord(pdbStructure),1);
 end

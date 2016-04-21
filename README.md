@@ -281,7 +281,7 @@ Extend selection to whole atoms in same chain.
         as('bychain resi 73',pdbStruct)  
 
 ### Set attribute by selection  
-This section show how to set values to specific field and atoms.  
+This section shows how to set values to specific field and atoms.  
 
     asSetAttribute('protein',pdbStruct,'segment','PROA')
 Change the segment field of protein to "PROA".
