@@ -18,6 +18,6 @@ or:(?<=\W)or(?=\W):or:2:2:3
 within:(?<=\W)within{1}\s+.*?\s.*?of(?=\W):within:2:3:3
 |:\|:or:2:2:3
 &:\&:and:2:2:3
-byres:(?<=\W)byres(?=\W):byres:1:4:3
-not:(?<=\W)not(?=\W):not:1:4:3
-bychain:(?<=\W)bychain(?=\W):bychain:1:4:3
+byres:(?<=\W|^)byres(?=\W):byres:1:4:3
+not:(?<=\W|^)not(?=\W):not:1:4:3
+bychain:(?<=\W|^)bychain(?=\W):bychain:1:4:3
