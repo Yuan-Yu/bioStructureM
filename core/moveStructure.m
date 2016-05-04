@@ -2,7 +2,7 @@ function [movedStructure]=moveStructure(pdbStructure,T,R)
 %%%%%%%%%%%%%%%%% need getCoordfromca %%%%%%%%%%%%%%%%%%%
 % input:
 %   pdbStructure: The stucture array gotten from readPDB.
-%   T: Translation matrix
+%   T: Translation vector
 %   R: Rotation matrix
 %%%%%%%%%%%%%%%%% need getCoordfromca %%%%%%%%%%%%%%%%%%%
 if ~exist('R','var')
