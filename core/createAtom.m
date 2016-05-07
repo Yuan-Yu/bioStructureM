@@ -1,9 +1,10 @@
 function [atomStructure] = createAtom(resname,atmname,coord,record,subunit,bval,atomno,resno)
 %%%%%%%%%%%%%%% need %%%%%%%%%%%%%%%
 % input:
-%   record       (chars)
 %   resname      (chars)
+%   atomname     (chars)
 %   coord        (3*1 double)
+%   record       (chars)
 %   subunit      (chars)
 %   bval         (double)
 %   atomno       (double)
@@ -56,6 +57,6 @@ atomStructure.alternate = ' ';
 atomStructure.charge = '';
 atomStructure.segment = '';
 atomStructure = setElementSymbol(atomStructure);
-atomStructure = setMass(atomStructure);
+atomStructure = assignMass(atomStructure);
 
 
