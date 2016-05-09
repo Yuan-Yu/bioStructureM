@@ -136,12 +136,13 @@ vector<vector<Atom> > parse(ifstream &PDBFile,bool isNMR){
         if(strncmp(line,"ATOM",4)==0 || strncmp(line,"HETATM",6)==0 ){
             Atom currentAtom;
             parseATOM(line,currentAtom,strAtomno,strCoord,strBval,strOccupancy);
-            if(strncmp(currentAtom.resno,lastResno,4) || strncmp(currentAtom.iCode,lastiCode,1) || strncmp(currentAtom.segment,lastsegment,4)){
+            if(strncmp(currentAtom.resno,lastResno,4)!=0 || strncmp(currentAtom.iCode,lastiCode,1)!=0 || strncmp(currentAtom.segment,lastsegment,4)!=0){
                 currentInternalResno += 1;
                 addNullStrncpy(lastResno,currentAtom.resno,4);
                 addNullStrncpy(lastiCode,currentAtom.iCode,1);
-                currentAtom.internalResno =  currentInternalResno;
+                addNullStrncpy(lastsegment,currentAtom.segment,4);
             }
+            currentAtom.internalResno =  currentInternalResno;
             Atoms.push_back(currentAtom);
         }else if(strncmp(line,"ENDMDL",6)==0 && isNMR){
             frams_ptr.push_back(Atoms);
