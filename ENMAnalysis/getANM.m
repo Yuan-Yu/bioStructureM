@@ -1,7 +1,8 @@
-function [ dR ] = ANMdR(ca,fromModeth,toModeth)
-%# ca is the object gotten from cafrompdb.
-%The ANM attribute must be contain in ca.
-%modeth 
+function [ dR ] = getANM(ca,modth)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% input:
+%   ca is the object gotten from cafrompdb.
+%   modth is an array that the modth you want.
 %return dR that is the motion of modeth.(dR format is like      
 %   mode1_x1        mode2_x1      mode3_x1      mode4_x1    ---
 %   mode1_y1        mode2_y1      mode3_y1      mode4_y1    ---
@@ -11,6 +12,6 @@ function [ dR ] = ANMdR(ca,fromModeth,toModeth)
 %   mode1_z2        mode2_z2      mode3_z2      mode4_z2    ---
 %       |               |           |               |
     dR=[ca.ANM]';
-    dR=dR(:,fromModeth:toModeth);
+    dR=dR(:,modth);
 end
 
