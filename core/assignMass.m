@@ -1,9 +1,9 @@
-function [PDBStructure] = setMass(PDBStructure,elementSymbol2mass)
+function [PDBStructure] = assignMass(PDBStructure,elementSymbol2mass)
 %%%%%%%%%%%% need %%%%%%%%%%%%
 %
 % input:
 %   PDBStructure: the structure array of pdb
-%   elementSymbol2mass(option): the dict (containers.Map) of mass 
+%   elementSymbol2mass(option): the dict (containers.Map) of mass
 % return:
 %   PDBStructure: PDBStructure has mass attribute.
 %%%%%%%%%%%% need %%%%%%%%%%%%

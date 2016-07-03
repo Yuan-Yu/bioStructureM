@@ -1,16 +1,16 @@
-function [ ca,S ] =ANM(ca,mode,checkeigenvalue,cutOff,contactConstant,bondConstant,bond)
+function [ pdbStructure,ANMValue ] =ANM(pdbStructure,mode,checkeigenvalue,cutOff,contactConstant,bondConstant,bond)
 %%%%%%% need maforceANM.m,readkdatModesANM.m %%%%%%%%%%%
-% input:	
-%	ca is the object gotten from cafrompdb
+% input:
+%	pdbStructure is the object gotten from cafrompdb
 %	mode = how many mode do you want
 %   checkeigenvalue
-%   cutOff 
+%   cutOff
 %   contactConstant
 %   bondConstant
 %   bond
 % return:
-%	ca object that contain the ANM attribute
-%ca(index of atom).ANM matrix is like mode1_x   mode1_y     mode1_z
+%	pdbStructure object that contain the ANM attribute
+%pdbStructure(index of atom).ANM matrix is like mode1_x   mode1_y     mode1_z
 %                                     mode2_x   mode2_y     mode2_z
 %                                     mode3_x   mode3_y     mode3_z
 %                                        |          |           |
@@ -18,7 +18,12 @@ function [ ca,S ] =ANM(ca,mode,checkeigenvalue,cutOff,contactConstant,bondConsta
 %	ANMValue is the all eigvalue
 %%%%%%% need maforceANM.m,readkdatModesANM.m %%%%%%%%%%%
 %% %%%% check the argument %%%%
-resnum=length(ca);
+resnum=length(pdbStructure);
+
+if ~exist('mode','var')
+    mode = resnum*3-6;
+end
+
 if mode+6>resnum*3
     error('Useful_func:argumentWrong','mode exceeds resnum*3');
 end
@@ -35,7 +40,7 @@ if ~exist('checkeigenvalue','var')
     checkeigenvalue=1;
 end
 %% %%%% ANM %% %%%%
-[hes]=getANMHes(ca,cutOff,contactConstant,bondConstant,bond);
+[hes]=getANMHes(pdbStructure,cutOff,contactConstant,bondConstant,bond);
 if (mode+6)<(resnum*0.20) %optimize the speed
     if mode<4 % get more eigenvalue to check the result quality.
         [U,S]=eigs(hes,4+6,'sm');
@@ -61,7 +66,7 @@ if checkeigenvalue
 end
 %% %%%% put result into structure %% %%%%
 lastmode=6+mode;
-for i=1:resnum
-    ca(i).ANMValue=S(7:lastmode);
-end
-ca=setCoordLikeData(ca,U(:,7:lastmode),'ANM');
+
+ANMValue=S(7:lastmode);
+
+pdbStructure=setCoordLikeData(pdbStructure,U(:,7:lastmode),'ANM');

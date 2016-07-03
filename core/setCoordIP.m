@@ -1,6 +1,7 @@
-function [pdbStruct] = setCoord(pdbStruct,selectedAtoms,coordData)
+function [pdbStruct] = setCoordIP(pdbStruct,selectedAtoms,coordData)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % assign new coordinates for specific atoms.
+% warning: the output veriable must be same as input veriable.
 % input:
 %   pdbStruct: the pdb structure array gotten from readPDB.
 %   selectedAtoms: An array cantain the indexes of specific atoms which
@@ -24,5 +25,5 @@ function [pdbStruct] = setCoord(pdbStruct,selectedAtoms,coordData)
 % return:
 %   pdbStruct: assigned pdbStruct
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    setCoordCPP(pdbStruct,selectedAtoms,coordData);
+   pdbStruct = setCoord(pdbStruct,selectedAtoms,coordData);
 end
