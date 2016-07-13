@@ -1,4 +1,15 @@
 function [NH_only_mean_struct] = get_NH_only_mean_struct(mean_struct,PDB_Structure)
+%%%%%%%%%%%%%%%%%%%%%%%Need readPDB%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% input:
+%	mean_struct: The (Nx3) mean_struct gotten from PCA of MD Simulation. (should be a .mat file here!!)
+%	PDB_Structure: PDB structure array gotten from readPDB.
+%
+% return:
+%	NH_only_mean_struct: The mean_struct that only contains N and the first H atoms of each residue.
+%	EXCLUDE Proline residues since they don't have a NH bond vector!!
+%
+% Editor: Hong-Rui
+%%%%%%%%%%%%%%%%%%%%%%%Need readPDB%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	[atom_num,~] = size(mean_struct);
 	NH_index = zeros(atom_num,1);
 	protein = atomselect('protein',PDB_Structure);

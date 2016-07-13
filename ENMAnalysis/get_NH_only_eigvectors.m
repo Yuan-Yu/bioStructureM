@@ -1,4 +1,15 @@
 function [NH_only_eigvectors] = get_NH_only_eigvectors(eigvectors,PDB_Structure)
+%%%%%%%%%%%%%%%%%%%%%%%Need readPDB%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% input:
+%	eigvectors: The (3NxM) eigvectors gotten from PCA of MD Simulation. (should be a .mat file here!!)
+%	PDB_Structure: PDB structure array gotten from readPDB.
+%
+% return:
+%	NH_only_eigvectors: The eigvectors that only contains N and the first H atoms of each residue.
+%	EXCLUDE Proline residues since they don't have a NH bond vector!!
+%
+% Editor: Hong-Rui
+%%%%%%%%%%%%%%%%%%%%%%%Need readPDB%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	[three_N,num_of_modes] = size(eigvectors);
 	NH_index = zeros(three_N,1);
 	protein = atomselect('protein',PDB_Structure);
