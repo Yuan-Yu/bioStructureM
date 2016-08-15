@@ -20,13 +20,13 @@ function plot_order_parameter(mode_0,mode_1,mode_2,Exp_order_parameter,reduced_o
 	id_1 = [19,37,38];
 	id_2 = [19,37,38];
 
-	s_exp = plot(res_id_exp,o_exp,'bo');
+	s_exp = plot(res_id_exp,o_exp,'ko');
 	hold on
 	s_0 = plot(res_id_0,o_0,'rx-');
 	hold on
-	s_1 = plot(res_id_1,o_1,'g.-');
+	s_1 = plot(res_id_1,o_1,'b.-');
 	hold on
-	s_2 = plot(res_id_2,o_2,'k+-');
+	s_2 = plot(res_id_2,o_2,'gs-');
 
 	o_exp(id_exp) = [];
 	o_0(id_0) = [];
@@ -39,7 +39,6 @@ function plot_order_parameter(mode_0,mode_1,mode_2,Exp_order_parameter,reduced_o
 	res_id_2(id_2) = [];
 
 	set(s_exp,'xdata',res_id_exp,'ydata',o_exp);
-	set(s_0,'xdata',res_id_0,'ydata',o_0);
 	set(s_0,'xdata',res_id_0,'ydata',o_0);
 	set(s_1,'xdata',res_id_1,'ydata',o_1);
 	set(s_2,'xdata',res_id_2,'ydata',o_2);

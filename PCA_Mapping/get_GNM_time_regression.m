@@ -19,8 +19,8 @@ function [power_coefficient,corr,p_value,effective_time_scale,GNM_eigvalues] = g
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	[num_of_modes_GNM,~] = size(PCA_to_GNM_mode_mapping);
 	[PDB_Structure,GNM_eigvalues] = GNM(PDB_Structure,num_of_modes_GNM);
-%	GNM_eigvalues = GNM_eigvalues./(4*pi^(2));
-%	GNM_eigvalues = 6.02*10^(23)/4.18/1000/10^(20).*GNM_eigvalues;
+	GNM_eigvalues = GNM_eigvalues./(4*pi^(2));
+	GNM_eigvalues = 6.02*10^(23)/4.18/1000/10^(20).*GNM_eigvalues;
 	effective_time_scale = zeros(num_of_modes_GNM,1);
 	
 	for i = 1:num_of_modes_GNM

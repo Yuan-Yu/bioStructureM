@@ -12,9 +12,9 @@ function [Normalized_AutoCorr] = get_AutoCorr(traj)
 %
 % Editor: Hong-Rei
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	original_num_of_frames = length(traj);
-	traj = [traj zeros(1,original_num_of_frames-1)];
-	new_num_of_frames = length(traj);
+	original_num_of_frames = length(traj); %M points
+	traj = [traj zeros(1,length(traj)-1)];
+	new_num_of_frames = length(traj); %(2M-1) points
 	traj_fourier = fft(traj); 
 	intensity = traj_fourier.*conj(traj_fourier); %Wiener Khintchine theorem
 	AutoCorr = ifft(intensity)/new_num_of_frames; %Wiener Khintchine theorem

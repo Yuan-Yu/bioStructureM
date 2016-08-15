@@ -19,8 +19,8 @@ function [power_coefficient,corr,p_value,effective_time_scale,ANM_eigvalues] = g
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	[num_of_modes_ANM,~] = size(PCA_to_ANM_mode_mapping);
 	[PDB_Structure,ANM_eigvalues] = ANM(PDB_Structure,num_of_modes_ANM);
-%	ANM_eigvalues = ANM_eigvalues./(4*pi^(2));
-%	ANM_eigvalues = 6.02*10^(23)/4.18/1000/10^(20).*ANM_eigvalues;
+	ANM_eigvalues = ANM_eigvalues./(4*pi^(2));
+	ANM_eigvalues = 6.02*10^(23)/4.18/1000/10^(20).*ANM_eigvalues;
 	effective_time_scale = zeros(num_of_modes_ANM,1);
 	
 	for i = 1:num_of_modes_ANM

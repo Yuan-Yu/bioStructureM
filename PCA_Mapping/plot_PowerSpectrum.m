@@ -10,7 +10,7 @@ function plot_PowerSpectrum(Normalized_PowerSpectrum,time_interval)
 	half_Num_of_frames = length(Normalized_PowerSpectrum);
 	sampling_frequency = 1/time_interval;
 	frequency_vector = sampling_frequency*(0:(half_Num_of_frames-1))./(half_Num_of_frames*2);
-	stem(frequency_vector(1:100).*(10^4),Normalized_PowerSpectrum(1:100),'r.')
+	stem(frequency_vector(1:1000).*(10^4),Normalized_PowerSpectrum(1:1000),'r.')
 	xlabel('Frequency (10^{8} Hz)')
 	ylabel('Normalized Intensity')
 	title('Power Spectrum')

@@ -9,7 +9,7 @@ function plot_AutoCorr(Normalized_AutoCorr,time_interval)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	Num_of_frames = length(Normalized_AutoCorr);
 	time_vector = time_interval*(0:(Num_of_frames-1));
-	plot(time_vector./1000,Normalized_AutoCorr)
+	plot(time_vector./1000,Normalized_AutoCorr,'rx-')
 %	xlabel('Time (picosecond)')
 %	ylabel('Normalized Autocorrelation Function')
 %	title('Autocorrelation Function')
