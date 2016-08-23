@@ -1,5 +1,7 @@
 function [rotationMatrix]=getRotMatByAxisAngle(axis,angle)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
+% return the rotation matrix that should be oparated at right side.
+%  ex A*R = B, where A and B is a row vector and B is the ratated vector.
 % input:
 %   axis: the rotational axis 
 %   angle: rotational angle in rad
