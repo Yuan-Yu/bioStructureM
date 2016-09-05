@@ -16,10 +16,10 @@ function [U_rotation_removed,Fluc_int,Fluc_ext,Fluc_all] = get_remove_rigid_body
 % Editor: Hong-Rei
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%need PDB_Structure with eGNM attribute%%%%%%%%%%%%%%%%%%%%%%%%%
 	U_eGNM = geteGNM(PDB_Structure);
-    [N3,modes]=size(U_eGNM);
-    N = N3/3;
-    coor = getCoord(PDB_Structure);
-    center_of_mass_coordinate = coor - ones(N,1)*mean(coor);
+	[N3,modes]=size(U_eGNM);
+	N = N3/3;
+	coor = getCoord(PDB_Structure);
+	center_of_mass_coordinate = coor - ones(N,1)*mean(coor);
 	mass = ones(N,1);
 	U_rotation_removed = zeros(N3,modes);
 	r = center_of_mass_coordinate;
@@ -50,11 +50,9 @@ function [U_rotation_removed,Fluc_int,Fluc_ext,Fluc_all] = get_remove_rigid_body
 		v_rigid_body_rotation = cross(omega,r,2);
 		v_vibration = v_total - v_rigid_body_rotation;
 
-		if i>=4
-			Fluc_int = Fluc_int + sum(v_vibration.^2,2)/S_eGNM(i);
-			Fluc_ext = Fluc_ext + sum(v_rigid_body_rotation.^2,2)/S_eGNM(i);
-			Fluc_all = Fluc_all + sum(v_total.^2,2)/S_eGNM(i);
-        end
+		Fluc_int = Fluc_int + sum(v_vibration.^2,2)/S_eGNM(i);
+		Fluc_ext = Fluc_ext + sum(v_rigid_body_rotation.^2,2)/S_eGNM(i);
+		Fluc_all = Fluc_all + sum(v_total.^2,2)/S_eGNM(i);
 		U_rotation_removed(:,i) = reshape(v_vibration',N3,1);
 	end
 end

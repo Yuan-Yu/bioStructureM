@@ -1,18 +1,20 @@
-function [PDB_Structure,eGNMVal] = eGNM(PDB_Structure,mode,checkeigenvalue,cutOff)
+function [PDB_Structure,AeGNMVal] = AeGNM(PDB_Structure,mode,checkeigenvalue,cutOff,contactConstant,bondConstant,bond)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% eGNM: An ENM model that expand the N by N isotropic GNM hessian into a 3N by 3N isotropic model
-% by doing tensor product (GNM_Hessian x I(3,3)).
+% AeGNM: An ENM model that combine ANM and eGNM potential together.
 % input:
 %   PDB_Structure is the structure that gotten from cafrompdb.
 %   mode is a number the meaning is how many mode do you want.
 %   checkeigenvalue: to check eigenvalues or not. Default = 1.
+%	contactConstant: Default = 1.
+%   bondConstant: Default = 1.
+%   bond: Default = 0.
 %   cutOff: if the distance of two atom is less than cutOff,the two atom is contact to each other.
 %
 % return:
-%   PDB_Structure is the structure that contain eGNM attribute.(ex. PDB_Structure(indexOfAtom).eGNM)
+%   PDB_Structure is the structure that contain AeGNM attribute.(ex. PDB_Structure(indexOfAtom).AeGNM)
 %   the format is like
-%       PDB_Structure(indexOfAtom).eGNM(modth)=the eigenvectors of the n eGNM mode of the atom.
-%   eGNMVal: eGNM eigenvalues after removing top three zeros modes.
+%       PDB_Structure(indexOfAtom).AeGNM(modth)=the eigenvectors of the n AeGNM mode of the atom.
+%   AeGNMVal: AeGNM eigenvalues after removing top three zeros modes.
 %
 %
 % Editor: Hong-Rei
@@ -37,15 +39,23 @@ function [PDB_Structure,eGNMVal] = eGNM(PDB_Structure,mode,checkeigenvalue,cutOf
     	checkeigenvalue = 1;
 	end
 
+	if ~exist('contactConstant','var')
+    	contactConstant = 1;
+    	bondConstant = 1;
+    	bond = 0;
+    end
+
 	contactMatrix = getContactMatrix(PDB_Structure,cutOff);
-	eGNM_contactMatrix = kron(contactMatrix,eye(3));
-	[U_eGNM,eGNMVal] = eig(eGNM_contactMatrix);
-	eGNMVal = diag(eGNMVal);
+	eGNM_Hessian = kron(contactMatrix,eye(3));
+	ANM_Hessian = getANMHes(PDB_Structure,cutOff,contactConstant,bondConstant,bond);
+	AeGNM_Hessian = ANM_Hessian + eGNM_Hessian;
+	[U_AeGNM,AeGNMVal] = eig(AeGNM_Hessian);
+	AeGNMVal = diag(AeGNMVal);
     
 
 %% %%%% check result %% %%%%%%%%%%%%%%%%%
 	if checkeigenvalue
-    	tmp = sum(abs(eGNMVal(1:10))>10^(-9));
+    	tmp = sum(abs(AeGNMVal(1:10))>10^(-9));
     	if tmp>7
         	error('Useful_func:eigError','The number of zero eigenvalues is less than 3');
     	elseif tmp<7
@@ -54,6 +64,6 @@ function [PDB_Structure,eGNMVal] = eGNM(PDB_Structure,mode,checkeigenvalue,cutOf
 	end
 %% %%%% put result into structure %% %%%%
 	lastmode = mode + 3;
-    eGNMVal = eGNMVal(4:lastmode);
-    PDB_Structure = setCoordLikeData(PDB_Structure,U_eGNM(:,4:lastmode),'eGNM');
+    AeGNMVal = AeGNMVal(4:lastmode);
+    PDB_Structure = setCoordLikeData(PDB_Structure,U_AeGNM(:,4:lastmode),'AeGNM');
 end
