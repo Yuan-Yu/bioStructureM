@@ -14,16 +14,22 @@ function [selectedAtoms]=as(selectionString,PDBStructure,islogic)
 %                   an logical array can be applied to PDBStructure.
 %
 %%%%%%%%%%% need %%%%%%%%%%%
-if ~exist('islogic','var')
-    islogic = 0;
-end
-try
-    transformedCommands=commandParser(selectionString,PDBStructure);
-    selectedAtoms=operateCommand(transformedCommands,PDBStructure);
-    if islogic ==0
-        selectedAtoms = PDBStructure(selectedAtoms);
+    if ~exist('islogic','var')
+        islogic = 0;
     end
-catch error
-    throw(MException('atomSelector:SelectionError',['Selection Syntax Error\n' error.message]));
-end
+
+    if isempty(PDBStructure)
+        selectedAtoms = PDBStructure;
+        return
+    end
+
+    try
+        transformedCommands=commandParser(selectionString,PDBStructure);
+        selectedAtoms=operateCommand(transformedCommands,PDBStructure);
+        if islogic ==0
+            selectedAtoms = PDBStructure(selectedAtoms);
+        end
+    catch error
+        throw(MException('atomSelector:SelectionError',['Selection Syntax Error\n' error.message]));
+    end
 end
