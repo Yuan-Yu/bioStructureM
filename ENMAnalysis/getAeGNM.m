@@ -1,4 +1,4 @@
-function [ dR ] = getANM(ca,modth)
+function [ dR ] = getAeGNM(ca,modth)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % input:
 %   ca is the object gotten from cafrompdb.
@@ -12,10 +12,9 @@ function [ dR ] = getANM(ca,modth)
 %   mode1_z2        mode2_z2      mode3_z2      mode4_z2    ---
 %       |               |           |               |
 if ~exist('modth','var')
-    numMode=size(ca(1).ANM,1);
+    numMode=size(ca(1).AeGNM,1);
     modth = 1:numMode;
 end
-    dR=[ca.ANM]';
+    dR=[ca.AeGNM]';
     dR=dR(:,modth);
 end
-
