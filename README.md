@@ -29,6 +29,7 @@ a basic matlab package with VMD-like selection snytax for analysis protein struc
         - [bychain](#as-bychain)
         - [()](#as-br)  
     - [Set attribute by selection](#set-attribute-by-selection)
+    - [Save a new PDB file](#save-a-new-pdb-file)
 
 - - - - -
 ## Quick Start
@@ -280,6 +281,7 @@ Extend selection to whole atoms in same chain.
 
         as('bychain resi 73',pdbStruct)  
 
+<a name=set-attribute-by-selection></a>
 ### Set attribute by selection  
 This section shows how to set values to specific field and atoms.  
 
@@ -290,4 +292,10 @@ Change the segment field of protein to "PROA".
     newCABval = ones(1,144)*100
     asSetAttribute('protein and CA',pdbStruct,'bval',newCABval)  
 Set CA atoms bfactor to 100 and set all others to zero.  
-**Note: The number of assigned values should be same as number of atoms or a sigle value.**
+**Note: The number of assigned values should be same as number of atoms or a sigle value.**  
+
+<a name=save-a-new-pdb-file></a>
+### Save a new PDB file
+save pdbStructure as a .pdb file  
+
+    createPDB(pdbStruct,'output_path.pdb')
