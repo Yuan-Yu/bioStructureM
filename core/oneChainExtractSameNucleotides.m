@@ -30,8 +30,19 @@ function [sameCa1,sameCa2,result]=oneChainExtractSameNucleotides(ca1,ca2)
         sameCa1=ca1(ismember(resno1,[samePAtom1.internalResno]));
         sameCa2=ca2(ismember(resno2,[samePAtom2.internalResno]));
         if length(sameCa1)~=length(sameCa2)
-            baseException = MException('core:oneChainExtractSameCA','size defferent between chains');
-            throw(baseException);
+            atmnameCa1 = {sameCa1.atmname};
+            internalResnoCa1 = {sameCa1.internalResno};
+            elementIdCa1 = cellfun(@(x,y)[x '#' num2str(y)],atmnameCa1,internalResnoCa1,'UniformOutput',0);
+            atmnameCa2 = {sameCa2.atmname};
+            internalResnoCa2 = {sameCa2.internalResno};
+            elementIdCa2 = cellfun(@(x,y)[x '#' num2str(y)],atmnameCa2,internalResnoCa2,'UniformOutput',0);
+            [~,selection1,selection2] = intersect(elementIdCa1,elementIdCa2);
+            sameCa1 = sameCa1(selection1);
+            sameCa2 = sameCa2(selection2);
+            if length(sameCa1)~=length(sameCa2)
+                baseException = MException('core:oneChainExtractSameCA','size defferent between chains');
+                throw(baseException);
+            end
         end
     catch e
         baseException = MException('core:oneChainExtractSameNucleotides',['can not align chain ' ca1(1).subunit ' of pdbStructure1 to chain ' ca2(1).subunit ' of pdbStructure2']);

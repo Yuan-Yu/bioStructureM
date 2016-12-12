@@ -37,11 +37,11 @@ function [PDB_Structure,eGNMVal] = eGNM(PDB_Structure,mode,checkeigenvalue,cutOf
     	checkeigenvalue = 1;
 	end
 
-	contactMatrix = getContactMatrix(PDB_Structure,cutOff);
+	contactMatrix = getGNMContactMatrix(PDB_Structure,cutOff);
 	eGNM_contactMatrix = kron(contactMatrix,eye(3));
 	[U_eGNM,eGNMVal] = eig(eGNM_contactMatrix);
 	eGNMVal = diag(eGNMVal);
-    
+
 
 %% %%%% check result %% %%%%%%%%%%%%%%%%%
 	if checkeigenvalue

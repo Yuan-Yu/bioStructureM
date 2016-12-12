@@ -1,20 +1,19 @@
-function [contactMatrix,contactNum,pairwiseDistance] = getContactMatrix(pdb,cutOff)
-%%%%%%%%%%% need pairwiseDistance %%%%%%%%%%%%%%%%%%%
+function [contactMatrix] = getContactMatrix(pdb1,pdb2,cutOff)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % input:
-%   pdb is the structure gotten from cafrompdb.
+%   pdb1: the structure gotten from readPDB.
+%   pdb2: the structure gotten from readPDB.
 %   cutOff: If the distance of two atom more than the cutoff, the two atom
 %       are not contact.
 % return:
-%   contactMatrix is the GNM format contact matrix.
-%   contactNum is a vector of the contact number of each atom.
-%%%%%%%%%%% need pairwiseDistance %%%%%%%%%%%%%%%%%%%
-if ~exist('cutOff','var')
-    cutOff=7.3;
-end
-numOfAtom=length(pdb);
-pairwiseDistance=getPairwiseDistance(pdb,pdb);
-%the diag is 0.
-contactMatrix=eye(numOfAtom)-(pairwiseDistance<cutOff);
-contactNum=-sum(contactMatrix,2);
-contactMatrix=contactMatrix+diag(contactNum);
-end
+%   contactMatrix
+%       the format of dmatrix is like
+%            pdb1_atom1    pdb1_atom2    pdb1_atom3------
+% pdb2_atom1 iscontact11   iscontact21   iscontact31------
+% pdb2_atom2 iscontact12   iscontact22   iscontact32------
+% pdb2_atom3 iscontact13   iscontact23   iscontact33------
+%       |       |             |            |
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+pairwiseDistance= getPairwiseDistance(pdb1,pdb2);
+contactMatrix = pairwiseDistance < cutOff;

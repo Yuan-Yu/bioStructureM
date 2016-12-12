@@ -33,13 +33,13 @@ function [newCA1,newCA2]=extractSameCA(pdbStructure1,pdbStructure2,displayAlign)
         if isAmino
             [sameChain1{i},sameChain2{i},StrX,StrY]=oneChainExtractSameCA(tmpChain1,tmpChain2);
             if displayAlign 
-                display([chainID1(i) '  :']);
+                display([chainID1(i) ' : ' chainID2(i) ]);
                 display([StrX;StrY]);
             end
         else
             [sameChain1{i},sameChain2{i},Alignment]=oneChainExtractSameNucleotides(tmpChain1,tmpChain2);
             if displayAlign
-                display([chainID1(i) '  :' ]);
+                display([chainID1(i) ' : ' chainID2(i) ]);
                 display([Alignment(1,:)]);
                 display([Alignment(2,:)]);
             end

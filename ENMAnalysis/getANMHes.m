@@ -10,7 +10,8 @@ function [Hes]=getANMHes(pdb,cutOff,contactConstant,bondConstant,bond)
 %
 resNum=length(pdb);
 Hes=zeros(resNum*3);
-[contactMatrix,contactNum,pairwiseDistance]=getContactMatrix(pdb,cutOff);
+pairwiseDistance = getPairwiseDistance(pdb,pdb);
+contactMatrix = pairwiseDistance < cutOff;
 coord=getCoordfromca(pdb);
 for indexOfRes=1:resNum-1
     currentResCrd=coord(indexOfRes,:);

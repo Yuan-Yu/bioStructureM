@@ -45,13 +45,13 @@ function [PDB_Structure,AeGNMVal] = AeGNM(PDB_Structure,mode,checkeigenvalue,cut
     	bond = 0;
     end
 
-	contactMatrix = getContactMatrix(PDB_Structure,cutOff);
+	contactMatrix = getGNMContactMatrix(PDB_Structure,cutOff);
 	eGNM_Hessian = kron(contactMatrix,eye(3));
 	ANM_Hessian = getANMHes(PDB_Structure,cutOff,contactConstant,bondConstant,bond);
 	AeGNM_Hessian = ANM_Hessian + eGNM_Hessian;
 	[U_AeGNM,AeGNMVal] = eig(AeGNM_Hessian);
 	AeGNMVal = diag(AeGNMVal);
-    
+
 
 %% %%%% check result %% %%%%%%%%%%%%%%%%%
 	if checkeigenvalue

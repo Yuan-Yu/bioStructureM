@@ -7,10 +7,10 @@ function [pdbStructure,GNMValue]=GNM(pdbStructure,mode,cutOff)
 %       is contact to each other.
 %
 % return:
-%   pdbStructure is the structure that contain GNM attribute.(ex pdbStructure(indexOfAtom).GNM or pdbStructure(indexOfAtom).GNMValue)
-%   the format is like
-%       pdbStructure(indexOfAtom).GNM(modth)=the eigenvector of the n GNM mode of the atom.
-%       pdbStructure(indexOfAtom).GNMValue(modth)=the eigvalue of the n GNM mode.
+%   pdbStructure is the structure that contain GNM attribute.(ex pdbStructure(indexOfAtom).GNM)
+%       the format is like
+%           pdbStructure(indexOfAtom).GNM(modth)=the eigenvector of the n GNM mode of the atom.
+%   GNMValue
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -29,7 +29,7 @@ if mode+1>length(pdbStructure)
 end
 %%%%%%%%%%%%%%%%%%%%
 
-contactMatrix=getContactMatrix(pdbStructure,cutOff);
+contactMatrix=getGNMContactMatrix(pdbStructure,cutOff);
 [U,S]=eig(contactMatrix);
 S=diag(S);
 

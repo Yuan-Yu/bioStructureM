@@ -14,7 +14,7 @@ function [gnmEigVector]=getGNM(pdb,modth)
 %           |               |               |
 %           |               |               |
 if ~exist('modth','var')
-    numMode=size(ca(1).GNM,1);
+    numMode=size(pdb(1).GNM,1);
     modth = 1:numMode;
 end
 gnmEigVector=[pdb.GNM]';

@@ -10,7 +10,7 @@ function [pdbCell,allChainID]=separatePDBByChain(pdb)
 %%%%%%%%%%%%% need %%%%%%%%%%%%%%%%%%
 
     atomChainIDList=[pdb.subunit];
-    allChainID=unique(atomChainIDList);
+    allChainID=unique(atomChainIDList,'stable');
     numOfChain=length(allChainID);
     pdbCell=cell(1,length(numOfChain));
     for i=1:numOfChain
