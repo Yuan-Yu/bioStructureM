@@ -6,21 +6,39 @@ function [backboneModel]=coarseGrainedToBackbone(template,CGModel)
 % return:
 %   backboneModel is ca object just contain N Ca C O atom.
 %%%%%%% need getAtomByAtomName,getCoordfromca,rmsdfit,refreshCoordToCA %%%%%%%%
+backbone = getAtomByAtomName(template,'CA N C O');
 coord=getCoordfromca(getAtomByAtomName(template,'CA'));
-NCOCoord=getCoordfromca(getAtomByAtomName(template,'N C O'));
+backboneCoord=getCoordfromca(backbone);
+%%%%%% count number of atoms for each gap %%%%%%%%
+numAtom =length(backbone);
+isCA = strcmp({backbone.atmname},'CA');
+numAtomPerGap = ones(1,numAtom)*-1;
+count = 0;
+ for i = 1:numAtom
+     if isCA(i)
+         numAtomPerGap(i) = count;
+         count = 0;
+     end
+         count = count + 1;
+ end
+numAtomPerGap(i) = count;
+numAtomPerGap(numAtomPerGap<0) = [];
+%%%%%%end count number of atoms for each gap end %%%%%%%%
 CGCoord=getCoordfromca(CGModel);
 [numOfRes,n]=size(coord);
-backboneCoord=zeros(numOfRes*4,3);
+fixedBackboneCoord=zeros(numAtom,3);
 tempRMSD=[Inf ,0];
 tempRotation=cell(1,2);
 tempTranslocation=cell(1,2);
 CGcrd3=CGCoord(1:3,:);
 crd3=coord(1:3,:);
 [tempRotation{2},tempTranslocation{2},tempRMSD(2)]=rmsdfit(CGcrd3,crd3);
-temp=NCOCoord(1:4,:)*tempRotation{2}+repmat(tempTranslocation{2},4,1);
-backboneCoord(1,:)=temp(1,:);
-backboneCoord(2:5,:)=[CGCoord(1,:);temp(2:end,:)];
-currentIndexOfFinalCoord=6;
+temp=backboneCoord(1:numAtomPerGap(1)+numAtomPerGap(2),:)*tempRotation{2}+repmat(tempTranslocation{2},numAtomPerGap(1)+numAtomPerGap(2),1);
+
+fixedBackboneCoord(1:numAtomPerGap(1)+numAtomPerGap(2),:)=temp(:,:);
+
+
+currentIndexOfFinalCoord=numAtomPerGap(1)+numAtomPerGap(2)+ 1;
 for i=2:numOfRes-2
     tempRMSD(1)=tempRMSD(2);
     tempRotation{1}=tempRotation{2};
@@ -28,14 +46,12 @@ for i=2:numOfRes-2
     CGcrd3=CGCoord(i:i+2,:);
     crd3=coord(i:i+2,:);
     [tempRotation{2},tempTranslocation{2},tempRMSD(2)]=rmsdfit(CGcrd3,crd3);
-    backboneCoord(currentIndexOfFinalCoord,:)=CGcrd3(1,:);
-    currentIndexOfFinalCoord=currentIndexOfFinalCoord+1;
+    fixedBackboneCoord(currentIndexOfFinalCoord,:)=CGcrd3(1,:);
+    numAtomCurrentGap = numAtomPerGap(i+1);
     [value, index]=min(tempRMSD);
-    backboneCoord(currentIndexOfFinalCoord:currentIndexOfFinalCoord+2,:)=NCOCoord(currentIndexOfFinalCoord-i:currentIndexOfFinalCoord-i+2,:)*tempRotation{index}+repmat(tempTranslocation{index},3,1);
-    currentIndexOfFinalCoord=currentIndexOfFinalCoord+3;
+    fixedBackboneCoord(currentIndexOfFinalCoord:currentIndexOfFinalCoord+numAtomCurrentGap-1,:)=backboneCoord(currentIndexOfFinalCoord:currentIndexOfFinalCoord+numAtomCurrentGap-1,:)*tempRotation{index}+repmat(tempTranslocation{index},numAtomCurrentGap,1);
+    currentIndexOfFinalCoord=currentIndexOfFinalCoord+numAtomCurrentGap;
 end
-backboneCoord(end-6,:)=CGCoord(end-1,:);
-temp=NCOCoord(end-4:end,:)*tempRotation{2}+repmat(tempTranslocation{2},5,1);
-backboneCoord(end-5:end-3,:)=temp(1:3,:);
-backboneCoord(end-2:end,:)=[ CGCoord(end,:);temp(end-1:end,:)];
-backboneModel=refreshCoordToCA(getAtomByAtomName(template,'CA C O N'),backboneCoord);
+fixedBackboneCoord(currentIndexOfFinalCoord:currentIndexOfFinalCoord+numAtomPerGap(end)+numAtomPerGap(end-1)-1,:)=backboneCoord(currentIndexOfFinalCoord:currentIndexOfFinalCoord+numAtomPerGap(end)+numAtomPerGap(end-1)-1,:)*tempRotation{2}+repmat(tempTranslocation{2},+numAtomPerGap(end)+numAtomPerGap(end-1),1);
+fixedBackboneCoord(isCA,:) = CGCoord(:,:);
+backboneModel=refreshCoordToCA(backbone,fixedBackboneCoord);
