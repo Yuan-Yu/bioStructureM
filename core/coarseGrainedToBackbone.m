@@ -6,16 +6,18 @@ function [backboneModel]=coarseGrainedToBackbone(template,CGModel)
 % return:
 %   backboneModel is ca object just contain N Ca C O atom.
 %%%%%%% need getAtomByAtomName,getCoordfromca,rmsdfit,refreshCoordToCA %%%%%%%%
-backbone = getAtomByAtomName(template,'CA N C O');
-coord=getCoordfromca(getAtomByAtomName(template,'CA'));
+atomNameNodes = 'CA C4'' C2 P';
+nodesRegstring = '^CA$||^C4''$||^C2$||^P$';
+backbone = template;
+coord=getCoordfromca(getAtomByAtomName(template,atomNameNodes));
 backboneCoord=getCoordfromca(backbone);
 %%%%%% count number of atoms for each gap %%%%%%%%
 numAtom =length(backbone);
-isCA = strcmp({backbone.atmname},'CA');
+isNodes =~cellfun(@isempty,regexp({backbone.atmname},nodesRegstring,'once'));
 numAtomPerGap = ones(1,numAtom)*-1;
 count = 0;
  for i = 1:numAtom
-     if isCA(i)
+     if isNodes(i)
          numAtomPerGap(i) = count;
          count = 0;
      end
@@ -53,5 +55,5 @@ for i=2:numOfRes-2
     currentIndexOfFinalCoord=currentIndexOfFinalCoord+numAtomCurrentGap;
 end
 fixedBackboneCoord(currentIndexOfFinalCoord:currentIndexOfFinalCoord+numAtomPerGap(end)+numAtomPerGap(end-1)-1,:)=backboneCoord(currentIndexOfFinalCoord:currentIndexOfFinalCoord+numAtomPerGap(end)+numAtomPerGap(end-1)-1,:)*tempRotation{2}+repmat(tempTranslocation{2},+numAtomPerGap(end)+numAtomPerGap(end-1),1);
-fixedBackboneCoord(isCA,:) = CGCoord(:,:);
+fixedBackboneCoord(isNodes,:) = CGCoord(:,:);
 backboneModel=refreshCoordToCA(backbone,fixedBackboneCoord);
