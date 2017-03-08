@@ -12,7 +12,9 @@ function [logicIndexArray]=basicSelector_protein(PDBStructure,selectionCell)
 % check which atom will be selection
 atomNum=length(PDBStructure);
 all_names = {PDBStructure.atmname};
+all_resnames = {PDBStructure.resname};
 logicIndexArray=strcmp(all_names,'CA');
+logicIndexArray(strcmp(all_resnames,'CA')) = 0;
 index =find(logicIndexArray);
 startIndex = min(index)-40;
 if startIndex<=0

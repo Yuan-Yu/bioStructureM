@@ -12,8 +12,10 @@ function [logicIndexArray]=basicSelector_backbone(PDBStructure,selectionCell)
 % check which atom will be selection
 atomNum=length(PDBStructure);
 all_names = {PDBStructure.atmname};
+all_resnames = {PDBStructure.resname};
 logicIndexArray=strcmp(all_names,'CA');
-index =find(logicIndexArray);
+logicIndexArray(strcmp(all_resnames,'CA')) = 0;
+index = find(logicIndexArray);
 startIndex = min(index)-10;
 if startIndex<=0
     startIndex =1;
