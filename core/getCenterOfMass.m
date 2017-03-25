@@ -5,6 +5,9 @@ function [massCenter] = getCenterOfMass(pdbStructure)
 % return:
 %   massCenter
 %%%%%%%%%%%%%%%%%%
+if ~isfield(pdbStructure,'mass')
+    pdbStructure = assignMass(pdbStructure);
+end
 masses = [pdbStructure.mass]';
 extandMasses = repmat(masses,1,3);
 crd = getCoord(pdbStructure);

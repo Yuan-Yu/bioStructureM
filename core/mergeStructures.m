@@ -1,31 +1,48 @@
 function [mergedStructure]=mergeStructures(varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% merge PDB Structures, 
+%  Merge PDB Structures. This will reassign the atom index.
 % input:
-%   PDBStructure1:
+%   PDBStructure1
 %   PDBStructure2
 %       |
 %       |
+%   Note: inputs can be a cell of the PDBstructures. 
 % return:
 %   mergedStrcture : the PDB structure is merged all the input PDB Structure
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-numStruc  = length(varargin);
-atomNums = zeros(1,numStruc);
-minimumFields = fieldnames(varargin{1});
-
-for i = 1:numStruc
-    atomNums(i) = length(varargin{i});
-    minimumFields = intersect( minimumFields, fieldnames( varargin{i}));
+numInput  = length(varargin);
+numStruc = 0;
+PDBStructures = {};
+for i = 1:numInput
+    input = varargin{i};
+    if iscell(input)
+        numStructureinCell = length(input);
+        for indexInCell = 1:numStructureinCell
+            numStruc = numStruc + 1;
+            PDBStructures{numStruc} = input{indexInCell};
+        end
+    else
+        numStruc = numStruc + 1;
+        PDBStructures{numStruc} = input;
+    end
 end
 
-tmpDiffField=setdiff(fieldnames(varargin{1}),minimumFields);
-mergedStructure = rmfield(varargin{1},tmpDiffField);
+    
+atomNums = zeros(1,numStruc);
+minimumFields = fieldnames(PDBStructures{1});
+for i = 1:numStruc
+    atomNums(i) = length(PDBStructures{i});
+    minimumFields = intersect( minimumFields, fieldnames( PDBStructures{i}));
+end
+
+tmpDiffField=setdiff(fieldnames(PDBStructures{1}),minimumFields);
+mergedStructure = rmfield(PDBStructures{1},tmpDiffField);
 mergedStructure = orderfields(mergedStructure,minimumFields);
 mergedStructure(sum(atomNums)).(minimumFields{1}) = [];
 
 for i = 2:numStruc
-    tmpDiffField=setdiff(fieldnames( varargin{i}),minimumFields);
-    tmpStructure = rmfield(varargin{i},tmpDiffField);
+    tmpDiffField=setdiff(fieldnames( PDBStructures{i}),minimumFields);
+    tmpStructure = rmfield(PDBStructures{i},tmpDiffField);
     startindex = sum( atomNums(1:i-1) )+1;
     endindex = sum( atomNums(1:i) );
     mergedStructure(startindex : endindex) = orderfields(tmpStructure,minimumFields);
