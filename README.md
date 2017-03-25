@@ -144,7 +144,8 @@ Before using `getCenterOfMass`, assigning mass to each atom is needed.
 
     pdbStruct = assignMass(pdbStruct);
     mcenter = getCenterOfMass(pdbStruct);  
-<p name=atom-selection-as></p>
+<p name=atom-selection-as></p>  
+
 ### Atom selection (as)  
 Use VMD-like syntax to select specific atoms.  
 Select by atom name.  
