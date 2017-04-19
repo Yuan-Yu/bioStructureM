@@ -1,4 +1,4 @@
-function [alignStr  ,t_alltable,s_table,t_table]=alignSeqRepeatProt(seq1,seq2,gapPenalty,treshod,blosum)
+function [alignStr,s_table,t_table]=alignSeqRepeatProt(seq1,seq2,gapPenalty,treshod,blosum)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % implement of repeat alignment
 % input
@@ -64,22 +64,36 @@ function [alignStr  ,t_alltable,s_table,t_table]=alignSeqRepeatProt(seq1,seq2,ga
     end
     %track
     t_table=zeros(len2+1,len1+1);
-    t_alltable=cell(len2+1,len1+1);
     %calculate the table
     for c=1:len1
         for r=1:len2
-            [ v ,index ]=scoresRep(r,c,gapPenalty,preScorMatrix,s_table);
+            dig=s_table(r,c)+preScorMatrix(r,c);
+            up=s_table(r,c+1)+gapPenalty;
+            left=s_table(r+1,c)+gapPenalty;
+            if dig>=up
+                v=dig;
+                index=1;
+                if v<left
+                    v=left;
+                    index=3;
+                end
+            else 
+                v=up;
+                index=2;
+                if v<left
+                    v=left;
+                    index=3;
+                end
+            end
             s_table(r+1,c+1)=v;
             tsIndexC=c+1;
             tsIndexR=r+1;
-            t_table(tsIndexR,tsIndexC)=index(1);
-            t_alltable{tsIndexR,tsIndexC}=index;     
+            t_table(tsIndexR,tsIndexC)=index;   
         end
         colunm=[s_table(1,tsIndexC);s_table(2:end,tsIndexC)+treshod];
         [preColunmMax,preColunmIndex]=max(colunm);
         s_table(1,tsIndexC+1)=preColunmMax;
         t_table(1,tsIndexC+1)=preColunmIndex;
-        t_alltable{1,tsIndexC+1}=colunm(colunm==preColunmMax);
     end
     %trackback
     alignStr=trackRep(seq1,seq2,t_table);

@@ -34,3 +34,5 @@ nucleic:nucleic
 water:water
 wat:water
 wat.:water
+seq:sequence
+sequence:sequence
