@@ -15,6 +15,7 @@ a basic matlab package with VMD-like selection snytax for analysis protein struc
         - [insertion](#as-insertion)
         - [bval beta](#as-bval)
         - [resn restype](#as-resn)
+        - [seq sequence](#as-seq)
         - [chain c.](#as-chain)
         - [segment segid](#as-segment)
         - [atomnum atomicnumber](#as-atomnum)
@@ -203,7 +204,13 @@ Note: There should have extra space between "bval" and "condition". ex. "bal>40"
 - **resn restype** {residue-names}  
 
         as('resn ALA',pdbStruct)
-        as('resn ALA TYR',pdbStruct)
+        as('resn ALA TYR',pdbStruct)  
+ <a name=as-seq></a>
+- **seq sequence** {protein-sequence}  
+
+        as('seq GGFFLRIHPDGRVD',pdbStruct)
+        as('sequence GGFFLRIHPDGRVD',pdbStruct) 
+
 <a name=as-chain></a>
 - **chain c.** {one-character-chain-ID}  
 
