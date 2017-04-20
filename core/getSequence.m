@@ -35,7 +35,13 @@ numChain = length(seletedChains);
 sequence = cell(1,numChain);
 for i = 1:numChain
     chainID = seletedChains(i);
-    sequence{i} = cellfun(@(x) dict.get(x),allResNames(regexp(chainIDs,chainID)));
+    try
+        sequence{i} = cellfun(@(x) dict.get(x),allResNames(regexp(chainIDs,chainID)));
+    catch e
+        errorIndex = str2double(regexp(e.message,'(?<=at index )[0-9]*(?=,)','match'));
+        currentChainResnames = allResNames(regexp(chainIDs,chainID));
+       throw(MException('BiostructureM:SequenceThansform',['Unknown residue name: ' currentChainResnames{errorIndex}]));
+    end
 end
 
 
