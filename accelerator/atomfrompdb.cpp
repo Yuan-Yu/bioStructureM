@@ -4,6 +4,7 @@
 #include <vector>
 #include "matrix.h"
 #include "mex.h"
+#include <string>
 using namespace std;
 
 struct Atom {
@@ -121,8 +122,9 @@ void showAtomInfo(Atom currentAtom){
 }
 
 vector<vector<Atom> > parse(ifstream &PDBFile,bool isNMR){
-    int maxLengthLine=120 ,index = 0;
-    char line[120];
+    int index = 0;
+    const char* line;
+    string cppline;
     char strAtomno[7],strCoord[25],strBval[7],strOccupancy[7];
     vector<vector<Atom> > frams_ptr = vector<vector<Atom> >();
     vector<Atom> Atoms = vector<Atom>();
@@ -132,7 +134,8 @@ vector<vector<Atom> > parse(ifstream &PDBFile,bool isNMR){
     char lastsegment[5]="~!~!";
     int currentInternalResno =0;
     bool isUseENDMDL = false,isEnd = false; // prevet from geting mode number+1
-    while(PDBFile.getline(line,maxLengthLine)){
+    while(std::getline(PDBFile,cppline)){
+        line = cppline.c_str();
         if(strncmp(line,"ATOM",4)==0 || strncmp(line,"HETATM",6)==0 ){
             Atom currentAtom;
             parseATOM(line,currentAtom,strAtomno,strCoord,strBval,strOccupancy);
