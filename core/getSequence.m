@@ -12,8 +12,8 @@ function [sequence,seletedChains] = getSequence(pdbStructure,seletedChains,dict)
 %           array.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 indexCa = ~cellfun(@isempty,regexp({pdbStructure.atmname},'CA$','once'));
-tmpPDB = pdbStructure(indexCa);
-chainIDs = [tmpPDB.subunit];
+indexNonCalcium = cellfun(@isempty,regexp({pdbStructure.resname},'CA$','once'));
+tmpPDB = pdbStructure(indexCa & indexNonCalcium);
 
 if isempty(tmpPDB)
     seletedChains = '';
@@ -29,13 +29,19 @@ if ~exist('seletedChains','var')
 end
 
 
-allResNames = {tmpPDB.resname};
-
+ResNames = {tmpPDB.resname};
+chainIDs = [tmpPDB.subunit];
 numChain = length(seletedChains);
 sequence = cell(1,numChain);
 for i = 1:numChain
     chainID = seletedChains(i);
-    sequence{i} = cellfun(@(x) dict.get(x),allResNames(regexp(chainIDs,chainID)));
+    try
+        sequence{i} = cellfun(@(x) dict.get(x),ResNames(regexp(chainIDs,chainID)));
+    catch e
+        errorIndex = str2double(regexp(e.message,'(?<=at index )[0-9]*(?=,)','match'));
+        currentChainResnames = ResNames(regexp(chainIDs,chainID));
+       throw(MException('BiostructureM:SequenceThansform',['Unknown residue name: ' currentChainResnames{errorIndex}]));
+    end
 end
 
 
