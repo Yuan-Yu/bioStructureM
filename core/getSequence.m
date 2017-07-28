@@ -5,15 +5,16 @@ function [sequence,seletedChains] = getSequence(pdbStructure,seletedChains,dict)
 %   pdbStructure: the structure array gotten by readPDB.
 %   seletedChains (optional): a char array contain the chain ID which would be extrated.
 %   dict (optional): a java dictionary for mapping three letters to one letter
+%   nonAminoResWithCA: a cell contains the residue name of non-amino acid
+%       group with CA atoms. ex. CA (Calcium)
 % return:
 %   seletedChains: return original seletedChains,if seletedChains is given. Otherwise, return
 %         all the chain ids in pdb structure.
 %   sequence: a cell array. The order of sequce would respect chian id
 %           array.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-indexCa = ~cellfun(@isempty,regexp({pdbStructure.atmname},'CA$','once'));
-indexNonCalcium = cellfun(@isempty,regexp({pdbStructure.resname},'CA$','once'));
-tmpPDB = pdbStructure(indexCa & indexNonCalcium);
+
+tmpPDB = getAminoAcidCA(pdbStructure);
 
 if isempty(tmpPDB)
     seletedChains = '';

@@ -1,8 +1,8 @@
-function [contactMatrix] = getContactMatrix(pdb1,pdb2,cutOff)
+function [contactMatrix] = getContactMatrixByCoord(coord1,coord2,cutOff)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 % input:
-%   pdb1: the structure gotten from readPDB.
-%   pdb2: the structure gotten from readPDB.
+%   coord1: a double array has N by 3
+%   coord2: a double array has N by 3.
 %   cutOff: If the distance of two atom more than the cutoff, the two atom
 %       are not contact.
 % return:
@@ -14,6 +14,12 @@ function [contactMatrix] = getContactMatrix(pdb1,pdb2,cutOff)
 % pdb2_atom3 iscontact13   iscontact23   iscontact33------
 %       |       |             |            |
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-crd1 = getCoord(pdb1);
-crd2 = getCoord(pdb2);
-contactMatrix = getContactMatrixByCoord(crd1,crd2,cutOff);
+[numAtoms,~]=size(coord1);
+[numAtom2,~]=size(coord2);
+pairwiseDistance=Inf(numAtom2,numAtoms);
+
+for i=1:numAtoms
+    dRi=coord2-repmat(coord1(i,:),numAtom2,1);
+    pairwiseDistance(:,i)=sqrt(sum(dRi.^2,2));
+end
+contactMatrix = pairwiseDistance < cutOff;
