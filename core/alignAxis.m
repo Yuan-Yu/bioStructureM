@@ -8,7 +8,15 @@ function [rotatMat]= alignAxis(movedAxis,targetAxis)
 %   rotatMat: a 3 by 3 rotation matrix. 
 %       To apply the rotation matrix to PDB structure: moveStructure function 
 %       To apply the rotation matrix to coord (n by 3): coord * rotatMat
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
+    [mRownum,mColnum]=size(movedAxis);
+    [tRownum,tColnum]=size(targetAxis);
+    if mRownum == 3
+        movedAxis = movedAxis';
+    end
+    if tRownum == 3
+        movedAxis = movedAxis';
+    end
     [axis,angle] = getRotationAxisAngle(movedAxis,targetAxis);
     rotatMat= getRotMatByAxisAngle(axis,angle);
 end
