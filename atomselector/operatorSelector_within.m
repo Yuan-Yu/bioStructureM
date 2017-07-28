@@ -15,22 +15,12 @@ if sum(inputCell{1}) ==0 ||sum(inputCell{2}) ==0
 else
     subPDB1 = PDBStructure(inputCell{1});
     subPDB2 = PDBStructure(inputCell{2});
-    crd1 = [subPDB1.coord];
-    crd2 = [subPDB2.coord];
-    [~,cNum]=size(crd2);
-    [~,NumOfSubPDB1]=size(crd1);
-    tmpLogical = false(1,cNum);
-    MajorLogical =false(1,cNum);
-    for i=1:NumOfSubPDB1
-        tmpLogical(:) = (abs(crd2(1,:) -crd1(1,i)) < cutoff);
-        tmpLogical(tmpLogical) = (abs(crd2(2,tmpLogical) -crd1(2,i)) < cutoff);
-        tmpLogical(tmpLogical) = (abs(crd2(3,tmpLogical) -crd1(3,i)) < cutoff);
-        tmpLogical(tmpLogical)=sum(bsxfun(@minus,crd2(:,tmpLogical),crd1(:,i)).^2,1) < sqcutoff;
-        MajorLogical(:)=MajorLogical|tmpLogical;
-    end
+    contactMatrix = getContactMatrix(subPDB1,subPDB2,cutoff);
+    MajorLogical = sum(contactMatrix,2) > 0;
     logicIndexArray = inputCell{2};
     logicIndexArray(logicIndexArray)=MajorLogical(:);
 end
 
 
 end
+
