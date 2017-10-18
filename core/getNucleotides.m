@@ -1,35 +1,35 @@
-function [nucleotides]=getNucleotides(PDBStructure,getORremove,nucleotideThree2One)
+function [nucleotides]= getNucleotides(pdbStructure,getORremove,islogical,nucleotideThree2One)
 %%%%%%%%%%% need %%%%%%%%%%%%
 % input:
 %   PDBStructure: the object gotten from cafrompdb
 %   getORremove is an logic variable. get=0,remove=1; Default:0
+%   islogical: if 0 return a pdb structure array,Default:0
 %	nucleotideThree2One: the conterners.Map for covering three to one letter
 % return: 
-%   nucleotides : The Nucleotides in the PDBStructure
+%   nucleotides : The Nucleotides in the PDBStructure or index
 %%%%%%%%%%% need %%%%%%%%%%%%
-if ~exist('getORremove','var')
-    getORremove=0;
-end
-if ~exist('nucleotideThree2One','var')
-	load nucleotideThree2One.mat
-end
-	
-
-for i = 1:length(PDBStructure)
-	if nucleotideThree2One.isKey(PDBStructure(i).resname)
-		PDBStructure(i).internal_resname = nucleotideThree2One(PDBStructure(i).resname);
-	else
-		PDBStructure(i).internal_resname = PDBStructure(i).resname;
-	end
-end
-
-resnames=regexp({PDBStructure.internal_resname},'(?<=^\s*)\w{1}(?=\s*$)','match');
-PDBStructure = rmfield(PDBStructure,'internal_resname');
-
-if ~getORremove
-    index = cellfun(@isempty,resnames)==0;
-    nucleotides=PDBStructure(index);
-else
-    index = cellfun(@isempty,resnames);
-    nucleotides=PDBStructure(index);
+    if ~exist('nucleotideThree2One','var')
+        load nucleotideThree2One.mat
+    end
+    if ~exist('getORremove','var')
+        getORremove = 0;
+    end
+    if ~exist('islogical','var')
+        islogical = 0;
+    end
+    resNames = {pdbStructure.resname};
+    nucleotidesResNames = nucleotideThree2One.keys;
+    internalResnos = [pdbStructure.internalResno];
+    [~,ia, ic] = unique(internalResnos);
+    nucleotidesIndex = cellfun(@(x) any(strcmp(x,nucleotidesResNames)),resNames(ia));
+    nucleotidesIndex = nucleotidesIndex(ic);
+    
+    if getORremove
+        nucleotidesIndex = ~nucleotidesIndex;
+    end
+    if islogical
+        nucleotides = nucleotidesIndex;
+    else
+        nucleotides = pdbStructure(nucleotidesIndex);
+    end
 end
