@@ -1,9 +1,9 @@
-function [nucleotides]= getNucleotides(pdbStructure,getORremove,islogical,nucleotideThree2One)
+function [nucleotides]= getNucleotides(pdbStructure,islogical,getORremove,nucleotideThree2One)
 %%%%%%%%%%% need %%%%%%%%%%%%
 % input:
 %   PDBStructure: the object gotten from cafrompdb
-%   getORremove is an logic variable. get=0,remove=1; Default:0
 %   islogical: if 0 return a pdb structure array,Default:0
+%   getORremove is an logic variable. get=0,remove=1; Default:0
 %	nucleotideThree2One: the conterners.Map for covering three to one letter
 % return: 
 %   nucleotides : The Nucleotides in the PDBStructure or index

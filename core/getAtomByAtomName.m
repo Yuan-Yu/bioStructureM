@@ -1,4 +1,4 @@
-function [ca]=getAtomByAtomName(ca,atomName,getORremove)
+function [ca]=getAtomByAtomName(ca,atomName,getORremove,isLogical)
 %%
 % input:
 %   ca is the object got from cafrompdb.
@@ -10,9 +10,17 @@ function [ca]=getAtomByAtomName(ca,atomName,getORremove)
 if ~exist('getORremove','var')
     getORremove=0;
 end
+
+if ~exist('isLogical','var')
+    isLogical=0;
+end
 atomName=regexp(atomName,'\s+','split');
 temp=ismember({ca.atmname},atomName);
 if getORremove
-    temp=temp==0;
+    temp=~temp;
 end
-ca=ca(temp);
+if isLogical
+    ca = temp;
+else
+    ca=ca(temp);
+end
