@@ -15,8 +15,17 @@ function [newCA1,newCA2,StrX,StrY]=oneChainExtractSameCA(ca1,ca2)
 try
 %% 
     indexOfres=1;
+    numTempCa1 = length(tempca1);
+    numTempCa2 = length(tempca2);
+    if numTempCa1 == 0 || numTempCa2 == 0 
+        newCA1 = [];
+        newCA2 = [];
+        StrX ='';
+        StrY = '';
+        return
+    end
     resno1 = zeros(length(tempca1),1);
-    for i=1:length(tempca1)
+    for i=1:numTempCa1
         if dict.containsKey(tempca1(i).resname)
             resName1(indexOfres,1) = dict.get(tempca1(i).resname);
             resno1(indexOfres,1) = tempca1(i).internalResno;
@@ -25,7 +34,7 @@ try
     end
     indexOfres=1;
     resno2 = zeros(length(tempca2),1);
-    for i=1:length(tempca2)
+    for i=1:numTempCa2
         if dict.containsKey(tempca2(i).resname)
             resName2(indexOfres,1)=dict.get(tempca2(i).resname);
             resno2(indexOfres,1) = tempca2(i).internalResno;
