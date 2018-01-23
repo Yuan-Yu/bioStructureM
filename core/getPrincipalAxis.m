@@ -24,6 +24,9 @@ crd = getCoord(pdbStructure);
 massCenter = sum(crd.*extandMasses/sum(masses,1));
 q = (crd - repmat(massCenter,atomNum,1)).*extandMasses;
 [PCs,eigvalues] = eig(q'*q);
+[eigvalues,index]= sort(diag(eigvalues),'descend');
+PCs = PCs(:,index);
+eigvalues = diag(eigvalues);
 
 
 

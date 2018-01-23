@@ -48,7 +48,7 @@ function createPDB( pdbStructure,filPath )
             is4 = cellfun(@length,atomnames) > 3;
             atomnames(~is4) = cellfun(@(x) sprintf(atomname_Format_3,x),atomnames(~is4),'uniformoutput',0);
            for i=1:length(model)
-                if pdbStructure(i).atomno > 99999
+                if model(i).atomno > 99999
                     PDB_Format = PDB_Format_hex;
                 else
                     PDB_Format = PDB_Format_Dec;

@@ -17,14 +17,14 @@ function [moved,eRMSD,R,T]=superimpose(moved,target)
         COORD2=getCoordfromca(target);
         [R,T,eRMSD,~,newCOORD1]=rmsdfit(COORD2,COORD1);
         moved = setCoord(moved,true(length(moved),1),newCOORD1);
-    elseif ismatrix(target) && ismatrix(moved)
+    elseif ~isstruct(target) && ~isstruct(moved)
         [R,T,eRMSD,~,newCOORD1]=rmsdfit(target,moved);
         moved = newCOORD1;
-    elseif isstruct(moved) && ismatrix(target)
+    elseif isstruct(moved) && ~isstruct(target)
         COORD1=getCoordfromca(moved);
         [R,T,eRMSD,~,newCOORD1]=rmsdfit(target,COORD1);
         moved = setCoord(moved,true(length(moved),1),newCOORD1);
-    elseif isstruct(target) && ismatrix(moved)
+    elseif isstruct(target) && ~isstruct(moved)
         COORD2=getCoordfromca(target);
         [R,T,eRMSD,~,newCOORD1]=rmsdfit(COORD2,moved);
         moved = newCOORD1;
