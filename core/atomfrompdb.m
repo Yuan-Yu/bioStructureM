@@ -113,7 +113,8 @@ end
 if pdbType&& ~isempty(mode)
     ca=mode;
 elseif pdbType
-    display('It seems like this pdb is not NMR structure!')
+    warning('It seems like this pdb is not NMR structure!');
+    ca(numOfRes+1:end)=[];
 else
     ca(numOfRes+1:end)=[];
 end
