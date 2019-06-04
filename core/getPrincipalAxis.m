@@ -22,7 +22,7 @@ end
 extandMasses = repmat(masses,1,3);
 crd = getCoord(pdbStructure);
 massCenter = sum(crd.*extandMasses/sum(masses,1));
-q = (crd - repmat(massCenter,atomNum,1)).*extandMasses;
+q = (crd - repmat(massCenter,atomNum,1)).*(extandMasses.^0.5);
 [PCs,eigvalues] = eig(q'*q);
 [eigvalues,index]= sort(diag(eigvalues),'descend');
 PCs = PCs(:,index);
