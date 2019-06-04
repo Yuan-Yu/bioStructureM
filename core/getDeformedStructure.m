@@ -1,12 +1,16 @@
-function [positiveCa,negativeCa]=getDeformedStructure(originalStructure,vectorOfMotion,scaleOfMotion)
+function [positiveCa,negativeCa]=getDeformedStructure(originalStructure,vectorOfMotion,scaleOfMotion,isFixBond)
 %%%%% need getCoordfromca,vector2coord,refreshCoordToCA,getBendingAngles,getDihedralAngles,getBondLengths,superimpose.%%%%%%%
 % input:
-%   originalStructure
-%   vectorOfMotion
-%   scaleOfMotion
+%   originalStructure:
+%   vectorOfMotion: 
+%   scaleOfMotion: RMSD in angstrom
+% 	isFixBond: whether to fix CA bond length by original structure.  (default=0)
 % return:
 %   deformedStructure
 %%%%% need getCoordfromca,vector2coord,refreshCoordToCA,getBendingAngles,getDihedralAngles,getBondLengths,superimpose %%%%%%%
+if ~exist('isFixBond','var')
+	isFixBond = 0;
+end
 originalCoord=getCoordfromca(originalStructure);
 motion=vector2coord(vectorOfMotion);
 numOfRes=length(vectorOfMotion)/3;
@@ -16,10 +20,12 @@ negativeDeform=originalCoord-motion;
 positiveDefrom=originalCoord+motion;
 negativeCa=refreshCoordToCA(originalStructure,negativeDeform);
 positiveCa=refreshCoordToCA(originalStructure,positiveDefrom);
-negativeBending=getBendingAngles(negativeCa);
-negativeDihedra=getDihedralAngles(negativeCa);
-positiveBending=getBendingAngles(positiveCa);
-positiveDihedra=getDihedralAngles(positiveCa);
-bondLength=getBondLengths(originalStructure);
-positiveCa=superimpose(refreshCoordToCA(originalStructure,rebuildStructure(bondLength,positiveDihedra,positiveBending)),positiveCa);
-negativeCa=superimpose(refreshCoordToCA(originalStructure,rebuildStructure(bondLength,negativeDihedra,negativeBending)),negativeCa);
+if isFixBond
+	negativeBending=getBendingAngles(negativeCa);
+	negativeDihedra=getDihedralAngles(negativeCa);
+	positiveBending=getBendingAngles(positiveCa);
+	positiveDihedra=getDihedralAngles(positiveCa);
+	bondLength=getBondLengths(originalStructure);
+	positiveCa=superimpose(refreshCoordToCA(originalStructure,rebuildStructure(bondLength,positiveDihedra,positiveBending)),positiveCa);
+	negativeCa=superimpose(refreshCoordToCA(originalStructure,rebuildStructure(bondLength,negativeDihedra,negativeBending)),negativeCa);
+end
